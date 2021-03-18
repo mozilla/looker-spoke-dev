@@ -1,5 +1,5 @@
 view: install {
-  sql_table_name: `mozdata.firefox_installer.install`
+  sql_table_name: `mozdata-nonprod.firefox_installer.install`
     ;;
 
   dimension_group: submission_timestamp {
@@ -49,12 +49,5 @@ view: install {
   dimension: build_id {
     type: string
     sql: ${TABLE}.build_id ;;
-  }
-}
-
-view: install__metadata__header__parsed_x_source_tags {
-  dimension: install__metadata__header__parsed_x_source_tags {
-    type: string
-    sql: install__metadata__header__parsed_x_source_tags ;;
   }
 }
