@@ -10,6 +10,11 @@ view: country_buckets {
       UNION ALL
       SELECT "tier-1" AS bucket;;
   }
+
+  dimension: bucket {
+    type: string
+    sql: ${TABLE}.bucket ;;
+  }
 }
 
 explore: install  {
