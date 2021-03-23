@@ -12,10 +12,8 @@ view: country_buckets {
   }
 }
 
-explore: country_buckets {}
-
 explore: install  {
-  sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1)
+  sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1);;
 }
 
 
@@ -27,3 +25,5 @@ explore: new_profile {
 explore: country_codes_v1 {
   hidden: yes
 }
+
+explore: country_buckets {}
