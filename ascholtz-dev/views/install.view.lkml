@@ -50,4 +50,14 @@ view: install {
     type: string
     sql: ${TABLE}.build_id ;;
   }
+
+  measure: new_installs {
+    type: count
+    filters: [had_old_install: "no"]
+  }
+
+  measure: paveovers {
+    type: count
+    filters: [had_old_install: "yes"]
+  }
 }
