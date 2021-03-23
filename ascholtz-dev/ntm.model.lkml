@@ -22,8 +22,8 @@ explore: install  {
   join: country_buckets {
     type: cross
     relationship: many_to_one
-    sql_where: ${country_buckets.bucket} == "Overall" OR (
-      ${country_buckets.bucket} == "tier-1" AND ${install.normalized_country_code} IN ('US', 'CA', 'DE', 'FR', 'GB')
+    sql_where: ${country_buckets.bucket} = "Overall" OR (
+      ${country_buckets.bucket} = "tier-1" AND ${install.normalized_country_code} IN ('US', 'CA', 'DE', 'FR', 'GB')
     ) ;;
   }
 }
