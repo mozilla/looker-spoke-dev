@@ -1,5 +1,5 @@
 view: install {
-  sql_table_name: `mozdata-nonprod.firefox_installer.install`
+  sql_table_name: `mozdata.firefox_installer.install`
     ;;
 
   dimension_group: submission_timestamp {
