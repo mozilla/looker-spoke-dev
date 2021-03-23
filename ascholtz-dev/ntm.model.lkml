@@ -5,12 +5,10 @@ include: "dashboards/*.dashboard"
 
 view: country_buckets {
   derived_table: {
-    sql: SELECT
-      code,
-      name,
-      bucket
-      FROM country_codes_v1
-      CROSS JOIN UNNEST(["Overall"]) AS bucket;;
+    sql:
+      SELECT "Overall" AS bucket
+      UNION ALL
+      SELECT "tier-1" AS bucket;;
   }
 }
 
