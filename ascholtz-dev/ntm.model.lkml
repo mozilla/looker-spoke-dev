@@ -23,7 +23,7 @@ explore: install  {
     ${succeeded} AND
     (${silent} = FALSE OR ${silent} IS NULL)) AND
     ${build_channel} = "release" AND
-    AND DATE_DIFF(  -- Only use builds from the last month
+    DATE_DIFF(  -- Only use builds from the last month
         ${submission_timestamp_date},
         SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
         MONTH
