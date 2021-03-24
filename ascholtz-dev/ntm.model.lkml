@@ -28,7 +28,7 @@ explore: install  {
         SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
         MONTH
     ) <= 1 AND
-    ${attribution} IN ("chrome", "ie", "edge");;
+    IF(${attribution} IS NULL, "Unknown", SPLIT(SPLIT(${attribution}, '26ua%3D')[SAFE_OFFSET(1)], '%')[SAFE_OFFSET(0)]) IN ("chrome", "ie", "edge");;
   join: country_buckets {
     type: cross
     relationship: many_to_one
@@ -42,7 +42,26 @@ explore: install  {
 
 
 explore: new_profile {
-  sql_always_where: ${submission_timestamp_date} > date(2020, 7, 1) ;;
+  sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
+    ${channel} = "release" AND
+    DATE_DIFF(  -- Only use builds from the last month
+      ${submission_timestamp_date},
+      SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
+      MONTH
+    ) <= 1 AND
+    ${os} = "Windows" AND
+    ${attribution_source} IS NOT NULL AND
+    ${distribution_id} IS NULL AND
+    ${attribution_ua} != "firefox";;
+  join: country_buckets {
+    type: cross
+    relationship: many_to_one
+    sql_where: ${country_buckets.bucket} = "Overall" OR (
+      ${country_buckets.bucket} = "tier-1" AND ${new_profile.normalized_country_code} IN ('US', 'CA', 'DE', 'FR', 'GB')
+    ) OR (
+      ${country_buckets.bucket} = "non-tier-1" AND ${new_profile.normalized_country_code}.normalized_country_code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')
+    ) OR ${country_buckets.bucket} = ${new_profile.normalized_country_code} ;;
+  }
 }
 
 
