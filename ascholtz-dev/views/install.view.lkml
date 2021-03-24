@@ -38,7 +38,7 @@ view: install {
 
   dimension: attribution {
     type: string
-    sql: ${TABLE}.attribution ;;
+    sql: IF(${TABLE}.attribution IS NULL, "Unknown", SPLIT(SPLIT(${TABLE}.attribution, '26ua%3D')[SAFE_OFFSET(1)], '%')[SAFE_OFFSET(0)]) ;;
   }
 
   dimension: build_channel {
