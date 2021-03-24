@@ -28,7 +28,7 @@ explore: install  {
         SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
         MONTH
     ) <= 1 AND
-    IF(${attribution} IS NULL, "Unknown", SPLIT(SPLIT(${attribution}, '26ua%3D')[SAFE_OFFSET(1)], '%')[SAFE_OFFSET(0)]) IN ("chrome", "ie", "edge");;
+    ${attribution} IN ("chrome", "ie", "edge");;
   join: country_buckets {
     type: cross
     relationship: many_to_one
