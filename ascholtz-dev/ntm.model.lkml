@@ -21,7 +21,7 @@ view: country_buckets {
 explore: install  {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
     ${succeeded} AND
-    (${silent} = FALSE OR ${silent} IS NULL)) AND
+    (${silent} = FALSE OR ${silent} IS NULL) AND
     ${build_channel} = "release" AND
     DATE_DIFF(  -- Only use builds from the last month
         ${submission_timestamp_date},
