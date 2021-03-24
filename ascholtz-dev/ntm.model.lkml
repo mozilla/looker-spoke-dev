@@ -6,9 +6,10 @@ include: "dashboards/*.dashboard"
 view: country_buckets {
   derived_table: {
     sql:
-      SELECT "Overall" AS bucket
-      UNION ALL
-      SELECT "tier-1" AS bucket;;
+      SELECT bucket
+      FROM UNNEST([
+        "Overall", "tier-1", "non-tier-1", "US", "CA", "DE", "FR", "GB", "MX", "BR", "CN"
+      ]) AS bucket;;
   }
 
   dimension: bucket {
@@ -24,7 +25,9 @@ explore: install  {
     relationship: many_to_one
     sql_where: ${country_buckets.bucket} = "Overall" OR (
       ${country_buckets.bucket} = "tier-1" AND ${install.normalized_country_code} IN ('US', 'CA', 'DE', 'FR', 'GB')
-    ) ;;
+    ) OR (
+      ${country_buckets.bucket} = "non-tier-1" AND ${install.normalized_country_code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')
+    ) OR ${country_buckets.bucket} == ${install.normalized_country_code} ;;
   }
 }
 
