@@ -27,7 +27,7 @@ explore: install  {
       ${country_buckets.bucket} = "tier-1" AND ${install.normalized_country_code} IN ('US', 'CA', 'DE', 'FR', 'GB')
     ) OR (
       ${country_buckets.bucket} = "non-tier-1" AND ${install.normalized_country_code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')
-    ) OR ${country_buckets.bucket} == ${install.normalized_country_code} ;;
+    ) OR ${country_buckets.bucket} = ${install.normalized_country_code} ;;
   }
 }
 
