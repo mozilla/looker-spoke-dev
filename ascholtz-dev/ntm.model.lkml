@@ -59,7 +59,7 @@ explore: new_profile {
     sql_where: ${country_buckets.bucket} = "Overall" OR (
       ${country_buckets.bucket} = "tier-1" AND ${new_profile.normalized_country_code} IN ('US', 'CA', 'DE', 'FR', 'GB')
     ) OR (
-      ${country_buckets.bucket} = "non-tier-1" AND ${new_profile.normalized_country_code}.normalized_country_code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')
+      ${country_buckets.bucket} = "non-tier-1" AND ${new_profile.normalized_country_code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')
     ) OR ${country_buckets.bucket} = ${new_profile.normalized_country_code} ;;
   }
 }
