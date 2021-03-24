@@ -22,7 +22,13 @@ explore: install  {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
     ${succeeded} AND
     (${silent} = FALSE OR ${silent} IS NULL) AND
-    ${build_channel} = "release";;
+    ${build_channel} = "release" AND
+    DATE_DIFF(  -- Only use builds from the last month
+        ${submission_timestamp_date},
+        SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
+        MONTH
+    ) <= 1 AND
+    IF(${attribution} IS NULL, "Unknown", SPLIT(SPLIT(${attribution}, '26ua%3D')[SAFE_OFFSET(1)], '%')[SAFE_OFFSET(0)]) IN ("chrome", "ie", "edge");;
   join: country_buckets {
     type: cross
     relationship: many_to_one
