@@ -22,13 +22,7 @@ explore: install  {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
     ${succeeded} AND
     (${silent} = FALSE OR ${silent} IS NULL) AND
-    ${build_channel} = "release" AND
-    DATE_DIFF(  -- Only use builds from the last month
-        ${submission_timestamp_date},
-        SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
-        MONTH
-    ) <= 1 AND
-    ${attribution} IN ("chrome", "ie", "edge");;
+    ${build_channel} = "release";;
   join: country_buckets {
     type: cross
     relationship: many_to_one
