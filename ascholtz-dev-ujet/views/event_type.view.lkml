@@ -5,7 +5,8 @@ view: event_type {
       mozfun.event_analysis.aggregate_match_strings(
           ARRAY_AGG(
             CONCAT(event_properties_match_string,
-                   event_match_string))) AS match_string
+                   event_match_string))) AS match_string,
+      category
     FROM (
       SELECT
         mozfun.event_analysis.event_index_to_match_string(index)
@@ -14,10 +15,12 @@ view: event_type {
                     ORDER BY
                       event_property_index DESC), '')
           AS event_properties_match_string,
+        category
       FROM
         (
           SELECT
             selected_events.index,
+            selected_events.category AS category,
             event_property.index AS event_property_index,
             COALESCE(event_property_match_string,
               '.') AS event_property_match_string
@@ -138,7 +141,7 @@ view: event_type {
 
   dimension: category {
     type: string
-    sql: ${event_type}.category ;;
+    sql: ${TABLE}.category ;;
   }
 
   dimension: match_string {
