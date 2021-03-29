@@ -92,7 +92,7 @@ view: event_type {
       GROUP BY
         index,
         category
-    );;
+    ) GROUP BY category;;
   }
 
   filter: message_id {
