@@ -136,7 +136,10 @@ view: event_type {
     group_label: "Event Properties"
   }
 
-  dimension: category {}
+  dimension: category {
+    type: string
+    sql: ${event_type}.category ;;
+  }
 
   dimension: match_string {
     hidden: yes
