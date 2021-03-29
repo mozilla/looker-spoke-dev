@@ -88,7 +88,8 @@ view: event_type {
 
         ) AS all_event_properties
       GROUP BY
-        index
+        index,
+        category
     );;
   }
 
