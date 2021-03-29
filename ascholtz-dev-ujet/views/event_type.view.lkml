@@ -6,7 +6,8 @@ view: event_type {
           ARRAY_AGG(
             CONCAT(event_properties_match_string,
                    event_match_string))) AS match_string,
-      category
+      category,
+      event
     FROM (
       SELECT
         mozfun.event_analysis.event_index_to_match_string(index)
@@ -21,6 +22,7 @@ view: event_type {
           SELECT
             selected_events.index,
             selected_events.category AS category,
+            selected_events.event,
             event_property.index AS event_property_index,
             COALESCE(event_property_match_string,
               '.') AS event_property_match_string
@@ -41,6 +43,7 @@ view: event_type {
               SELECT
                 selected_events.index,
                 selected_events.category,
+                selected_events.event,
                 event_property.index AS event_property_index,
                 mozfun.event_analysis.aggregate_match_strings(ARRAY_AGG(mozfun.event_analysis.escape_metachars(event_property_value.value))) AS event_property_match_string
               FROM
@@ -82,6 +85,7 @@ view: event_type {
               GROUP BY
                 selected_events.index,
                 selected_events.category,
+                selected_events.event,
                 event_property.index
             ) AS selected_event_properties
           ON
@@ -91,8 +95,9 @@ view: event_type {
         ) AS all_event_properties
       GROUP BY
         index,
-        category
-    ) GROUP BY category;;
+        category,
+        event
+    ) GROUP BY category, event;;
   }
 
   filter: message_id {
@@ -140,6 +145,11 @@ view: event_type {
     suggest_explore: event_property_display
     suggest_dimension: event_property_display.property_value
     group_label: "Event Properties"
+  }
+
+  dimension: event {
+    type: string
+    sql:  ${TABLE}.event ;;
   }
 
   dimension: category {
