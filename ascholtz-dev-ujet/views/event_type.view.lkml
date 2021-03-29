@@ -40,6 +40,7 @@ view: event_type {
             (
               SELECT
                 selected_events.index,
+                selected_events.category,
                 event_property.index AS event_property_index,
                 mozfun.event_analysis.aggregate_match_strings(ARRAY_AGG(mozfun.event_analysis.escape_metachars(event_property_value.value))) AS event_property_match_string
               FROM
@@ -80,6 +81,7 @@ view: event_type {
                 )
               GROUP BY
                 selected_events.index,
+                selected_events.category,
                 event_property.index
             ) AS selected_event_properties
           ON
