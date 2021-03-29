@@ -91,6 +91,7 @@ view: event_type {
 
   dimension: message_id {
     type: string
+    sql: event_names.category ;;
     suggest_explore: event_names
     suggest_dimension: event_names.category
   }
