@@ -101,12 +101,6 @@ view: event_type {
     ) GROUP BY category, event;;
   }
 
-  filter: message_id {
-    type: string
-    suggest_explore: event_names
-    suggest_dimension: event_names.category
-  }
-
   filter: page {
     type: string
     suggest_explore: event_property_page
@@ -149,9 +143,11 @@ view: event_type {
     suggest_dimension: event_names.event
   }
 
-  dimension: category {
+  dimension: message_id {
     type: string
     sql: ${TABLE}.category ;;
+    suggest_explore: event_names
+    suggest_dimension: event_names.category
   }
 
   dimension: match_string {
