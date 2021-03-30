@@ -6,8 +6,7 @@ view: event_type {
           ARRAY_AGG(
             CONCAT(event_properties_match_string,
                    event_match_string))) AS match_string,
-      category,
-      event
+      category
     FROM (
       SELECT
         mozfun.event_analysis.event_index_to_match_string(index)
@@ -16,14 +15,12 @@ view: event_type {
                     ORDER BY
                       event_property_index DESC), '')
           AS event_properties_match_string,
-        category,
-        event
+        category
       FROM
         (
           SELECT
             selected_events.index,
             selected_events.category AS category,
-            selected_events.event,
             event_property.index AS event_property_index,
             COALESCE(event_property_match_string,
               '.') AS event_property_match_string
@@ -44,7 +41,6 @@ view: event_type {
               SELECT
                 selected_events.index,
                 selected_events.category,
-                selected_events.event,
                 event_property.index AS event_property_index,
                 mozfun.event_analysis.aggregate_match_strings(ARRAY_AGG(mozfun.event_analysis.escape_metachars(event_property_value.value))) AS event_property_match_string
               FROM
@@ -86,7 +82,6 @@ view: event_type {
               GROUP BY
                 selected_events.index,
                 selected_events.category,
-                selected_events.event,
                 event_property.index
             ) AS selected_event_properties
           ON
@@ -96,9 +91,8 @@ view: event_type {
         ) AS all_event_properties
       GROUP BY
         index,
-        category,
-        event
-    ) GROUP BY category, event;;
+        category
+    ) GROUP BY category;;
   }
 
   filter: page {
@@ -136,9 +130,8 @@ view: event_type {
     group_label: "Event Properties"
   }
 
-  dimension: event_type {
+  filter: event_type {
     type: string
-    sql:  ${TABLE}.event ;;
     suggest_explore: event_names
     suggest_dimension: event_names.event
   }
