@@ -16,7 +16,8 @@ view: event_type {
                     ORDER BY
                       event_property_index DESC), '')
           AS event_properties_match_string,
-        category
+        category,
+        event
       FROM
         (
           SELECT
