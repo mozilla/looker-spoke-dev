@@ -107,12 +107,6 @@ view: event_type {
     suggest_dimension: event_names.category
   }
 
-  filter: event_type {
-    type: string
-    suggest_explore: event_names
-    suggest_dimension: event_names.event
-  }
-
   filter: page {
     type: string
     suggest_explore: event_property_page
@@ -148,9 +142,11 @@ view: event_type {
     group_label: "Event Properties"
   }
 
-  dimension: event {
+  dimension: event_type {
     type: string
     sql:  ${TABLE}.event ;;
+    suggest_explore: event_names
+    suggest_dimension: event_names.event
   }
 
   dimension: category {
