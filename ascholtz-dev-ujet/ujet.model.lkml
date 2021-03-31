@@ -73,7 +73,24 @@ explore: funnel_analysis {
   sql_always_where: funnel_analysis.submission_date > "2010-01-01" ;;
 }
 
-explore: all_event_types {}
+explore: all_event_types {
+  join: event_type_1 {
+    relationship: many_to_one
+    type: cross
+  }
+  join: event_type_2 {
+    relationship: many_to_one
+    type: cross
+  }
+  join: event_type_3 {
+    relationship: many_to_one
+    type: cross
+  }
+  join: event_type_4 {
+    relationship: many_to_one
+    type: cross
+  }
+}
 
 explore: event_names {
   hidden: yes
