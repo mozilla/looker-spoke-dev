@@ -73,6 +73,8 @@ explore: funnel_analysis {
   sql_always_where: funnel_analysis.submission_date > "2010-01-01" ;;
 }
 
+explore: all_event_types {}
+
 explore: event_names {
   hidden: yes
   from: raw_event_types

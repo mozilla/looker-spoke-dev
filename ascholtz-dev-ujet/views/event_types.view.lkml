@@ -15,3 +15,11 @@ view: event_type_3 {
 view: event_type_4 {
   extends: [event_type]
 }
+
+view: all_event_types {
+  derived_table: {
+    sql: SELECT * FROM event_type_1
+    UNION ALL
+    SELECT * FROM event_type_2;;
+  }
+}
