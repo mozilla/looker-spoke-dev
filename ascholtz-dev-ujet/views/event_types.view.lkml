@@ -22,4 +22,9 @@ view: all_event_types {
     UNION ALL
     SELECT * FROM event_type_2;;
   }
+
+  dimension: message_id {
+    type: string
+    sql:  ${TABLE}.category ;;
+  }
 }
