@@ -98,7 +98,7 @@ view: event_type {
         index,
         category,
         event_type
-    ) GROUP BY category;;
+    ) GROUP BY category, event_type;;
   }
 
   filter: page {
