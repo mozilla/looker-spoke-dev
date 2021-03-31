@@ -18,9 +18,9 @@ view: event_type_4 {
 
 view: all_event_types {
   derived_table: {
-    sql: SELECT * FROM event_type_1
+    sql: SELECT * FROM ${event_type_1.SQL_TABLE_NAME}
     UNION ALL
-    SELECT * FROM event_type_2;;
+    SELECT * FROM ${event_type_2.SQL_TABLE_NAME};;
   }
 
   dimension: message_id {
