@@ -31,4 +31,9 @@ view: all_event_types {
     type: string
     sql:  ${TABLE}.category ;;
   }
+
+  dimension: event_type {
+    type: string
+    sql: ${TABLE}.event_type ;;
+  }
 }

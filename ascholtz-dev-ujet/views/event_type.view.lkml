@@ -6,7 +6,8 @@ view: event_type {
           ARRAY_AGG(
             CONCAT(event_properties_match_string,
                    event_match_string))) AS match_string,
-      category
+      category,
+      event_type
     FROM (
       SELECT
         mozfun.event_analysis.event_index_to_match_string(index)
@@ -15,12 +16,14 @@ view: event_type {
                     ORDER BY
                       event_property_index DESC), '')
           AS event_properties_match_string,
-        category
+        category,
+        event_type
       FROM
         (
           SELECT
             selected_events.index,
             selected_events.category AS category,
+            selected_events.event AS event_type,
             event_property.index AS event_property_index,
             COALESCE(event_property_match_string,
               '.') AS event_property_match_string
@@ -41,6 +44,7 @@ view: event_type {
               SELECT
                 selected_events.index,
                 selected_events.category,
+                selected_events.event as event_type,
                 event_property.index AS event_property_index,
                 mozfun.event_analysis.aggregate_match_strings(ARRAY_AGG(mozfun.event_analysis.escape_metachars(event_property_value.value))) AS event_property_match_string
               FROM
@@ -82,6 +86,7 @@ view: event_type {
               GROUP BY
                 selected_events.index,
                 selected_events.category,
+                selected_event.event as event_type,
                 event_property.index
             ) AS selected_event_properties
           ON
@@ -91,7 +96,8 @@ view: event_type {
         ) AS all_event_properties
       GROUP BY
         index,
-        category
+        category,
+        event_type
     ) GROUP BY category;;
   }
 
@@ -130,8 +136,9 @@ view: event_type {
     group_label: "Event Properties"
   }
 
-  filter: event_type {
+  dimension: event_type {
     type: string
+    sql: ${TABLE}.event_type ;;
     suggest_explore: event_names
     suggest_dimension: event_names.event
   }
