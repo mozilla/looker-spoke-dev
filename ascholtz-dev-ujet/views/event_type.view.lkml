@@ -86,7 +86,7 @@ view: event_type {
               GROUP BY
                 selected_events.index,
                 selected_events.category,
-                selected_events.event_type,
+                selected_events.event,
                 event_property.index
             ) AS selected_event_properties
           ON
