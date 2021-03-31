@@ -31,6 +31,10 @@ explore: funnel_analysis {
     relationship: many_to_one
     type: cross
   }
+  join: all_event_types {
+    relationship: many_to_one
+    type: cross
+  }
   always_filter: {
     filters: [
       date: "14 days",
