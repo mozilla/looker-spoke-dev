@@ -31,6 +31,11 @@ view: country_buckets {
     type: string
     sql:  ${TABLE}.code ;;
   }
+
+  dimension: name {
+    type: string
+    sql: ${TABLE}.name ;;
+  }
 }
 
 explore: country_buckets {}
@@ -73,7 +78,13 @@ explore: new_profile {
   }
 }
 
-explore: session {}
+explore: session {
+  join: country_buckets {
+    type: cross
+    relationship: many_to_one
+    sql_where: ${country_buckets.name} = ${session.standardized_country_name} ;;
+  }
+}
 
 explore: country_codes_v1 {
   hidden: yes
