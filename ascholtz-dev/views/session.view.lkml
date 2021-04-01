@@ -51,4 +51,14 @@ view: session {
     type: string
     sql: ${TABLE}.standardized_country_name ;;
   }
+
+  measure: total_non_fx_sessions {
+    type: sum
+    sql: ${TABLE}.non_fx_sessions ;;
+  }
+
+  measure: total_non_fx_downloads {
+    type: sum
+    sql: ${TABLE}.non_fx_downloads ;;
+  }
 }
