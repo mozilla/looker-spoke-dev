@@ -64,6 +64,7 @@ explore: new_profile {
   }
 }
 
+explore: session {}
 
 explore: country_codes_v1 {
   hidden: yes
