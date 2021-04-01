@@ -47,9 +47,9 @@ explore: install  {
     ) <= 1 AND
     ${attribution} IN ("chrome", "ie", "edge");;
   join: country_buckets {
-    type: left_outer
-    relationship: one_to_many
-    sql_on: ${country_buckets.code} = ${install.normalized_country_code} ;;
+    type: cross
+    relationship: many_to_one
+    sql_where: ${country_buckets.code} = ${install.normalized_country_code} ;;
   }
 }
 
@@ -67,9 +67,9 @@ explore: new_profile {
     ${distribution_id} IS NULL AND
     ${attribution_ua} != "firefox";;
   join: country_buckets {
-    type: left_outer
-    relationship: one_to_many
-    sql_on: ${country_buckets.code} = ${new_profile.normalized_country_code} ;;
+    type: cross
+    relationship: many_to_one
+    sql_where: ${country_buckets.code} = ${new_profile.normalized_country_code} ;;
   }
 }
 
