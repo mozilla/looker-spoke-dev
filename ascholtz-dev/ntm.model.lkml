@@ -79,6 +79,7 @@ explore: new_profile {
 }
 
 explore: session {
+  sql_always_where: ${operating_system} = "Windows" and ${browser} != "Mozilla" ;;
   join: country_buckets {
     type: cross
     relationship: many_to_one
