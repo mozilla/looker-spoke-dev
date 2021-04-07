@@ -84,7 +84,8 @@ explore: session {
     type: cross
     relationship: many_to_one
     sql_where: ((${country_buckets.name} = ${session.standardized_country_name} AND ${session.standardized_country_name} != "USA") OR
-      (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US"));;
+      (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") OR
+      (${country_buckets.code} = "UK" AND ${session.standardized_country_name} = "United Kingdom"));;
   }
 }
 
