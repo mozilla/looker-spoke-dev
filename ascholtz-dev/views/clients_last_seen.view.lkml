@@ -43,7 +43,7 @@ view: clients_last_seen {
 
   dimension: activated {
     type: yesno
-    sql: coalesce(BIT_COUNT(${TABLE}.days_seen_bits & 0x7F), 0) >= 5 AS activated ;;
+    sql: coalesce(BIT_COUNT(${TABLE}.days_seen_bits & 0x7F), 0) >= 5 ;;
   }
 
   measure: total_activated {
