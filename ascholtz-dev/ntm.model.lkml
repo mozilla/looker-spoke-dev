@@ -82,7 +82,7 @@ explore: session {
   sql_always_where: ${operating_system} = "Windows" and ${browser} != "Mozilla" ;;
   join: country_buckets {
     type: cross
-    relationship: many_to_many
+    relationship: many_to_one
     sql_where: (${country_buckets.name} = ${session.standardized_country_name} AND ${session.standardized_country_name} != "USA") OR
       (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") ;;
   }
