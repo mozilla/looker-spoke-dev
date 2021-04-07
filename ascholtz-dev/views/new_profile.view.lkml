@@ -16,6 +16,11 @@ view: new_profile {
     sql: ${TABLE}.submission_timestamp ;;
   }
 
+  dimension: client_id {
+    type: string
+    sql:${TABLE}.client_id ;;
+  }
+
   dimension: normalized_country_code {
     type: string
     sql: ${TABLE}.normalized_country_code ;;
