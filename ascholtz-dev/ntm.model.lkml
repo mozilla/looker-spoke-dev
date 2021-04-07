@@ -85,7 +85,8 @@ explore: session {
     relationship: many_to_one
     sql_where: ((${country_buckets.name} = ${session.standardized_country_name} AND ${session.standardized_country_name} != "USA") OR
       (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") OR
-      (${country_buckets.code} = "GB" AND ${session.standardized_country_name} = "United Kingdom"));;
+      (${country_buckets.code} = "GB" AND ${session.standardized_country_name} = "United Kingdom") OR
+      (${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')));;
   }
 }
 
