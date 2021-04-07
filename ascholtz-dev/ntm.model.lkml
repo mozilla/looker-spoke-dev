@@ -13,6 +13,8 @@ view: country_buckets {
       )
       SELECT * FROM
         mozdata.static.country_codes_v1 c
+      UNION ALL
+      SELECT "OTHER" AS name, "OTHER" as code
       CROSS JOIN buckets
       WHERE
       bucket = "Overall" OR (
@@ -86,7 +88,7 @@ explore: session {
     sql_where: ((${country_buckets.name} = ${session.standardized_country_name} AND ${session.standardized_country_name} != "USA") OR
       (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") OR
       (${country_buckets.code} = "GB" AND ${session.standardized_country_name} = "United Kingdom") OR
-      (${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} NOT IN ('US', 'CA', 'DE', 'FR', 'GB')));;
+      (${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" ));;
   }
 }
 
