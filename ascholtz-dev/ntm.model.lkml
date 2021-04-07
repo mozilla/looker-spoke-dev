@@ -89,10 +89,16 @@ explore: session {
   join: country_buckets {
     type: cross
     relationship: many_to_one
-    sql_where: ((${country_buckets.name} = ${session.standardized_country_name} AND ${session.standardized_country_name} != "USA") OR
+    sql_where: (
       (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") OR
       (${country_buckets.code} = "GB" AND ${session.standardized_country_name} = "United Kingdom") OR
-      (${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" ));;
+      (${country_buckets.code} = "DE" AND ${session.standardized_country_name} = "Germany") OR
+      (${country_buckets.code} = "FR" AND ${session.standardized_country_name} = "France") OR
+      (${country_buckets.code} = "CA" AND ${session.standardized_country_name} = "Canada") OR
+      (${country_buckets.code} = "BR" AND ${session.standardized_country_name} = "Brazil") OR
+      (${country_buckets.code} = "MX" AND ${session.standardized_country_name} = "Mexico") OR
+      (${country_buckets.code} = "CN" AND ${session.standardized_country_name} = "China") OR
+      (${session.standardized_country_name} NOT IN ("USA", "Germany", "United Kingdom", "France", "Canada", "Mexico", "China", "Brazil") AND ${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" ));;
   }
 }
 
