@@ -6,15 +6,19 @@ include: "dashboards/*.dashboard"
 view: country_buckets {
   derived_table: {
     sql:
-      WITH buckets AS (SELECT bucket
+      WITH country_codes AS (
+        SELECT * FROM
+            mozdata.static.country_codes_v1 c
+          UNION ALL
+          SELECT "OTHER" AS name, "OTHER" as code
+      ),
+      buckets AS (SELECT bucket
         FROM UNNEST([
           "Overall", "tier-1", "non-tier-1", "US", "CA", "DE", "FR", "GB", "MX", "BR", "CN"
         ]) AS bucket
       )
       SELECT * FROM
-        mozdata.static.country_codes_v1 c
-      UNION ALL
-      SELECT "OTHER" AS name, "OTHER" as code
+        country_codes c
       CROSS JOIN buckets
       WHERE
       bucket = "Overall" OR (
