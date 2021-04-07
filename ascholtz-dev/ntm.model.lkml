@@ -67,7 +67,6 @@ explore: install  {
 
 explore: new_profile {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
-    (${clients_last_seen.submission_date} IS NULL OR ${clients_last_seen.submission_date} > date(2020, 7 ,1)) AND
     ${channel} = "release" AND
     DATE_DIFF(  -- Only use builds from the last month
       ${submission_timestamp_date},
@@ -87,6 +86,7 @@ explore: new_profile {
   join: clients_last_seen {
     type: left_outer
     relationship: one_to_one
+    sql_where: ${clients_last_seen.submission_date} > date(2020, 7 ,1) ;;
     sql_on: ${clients_last_seen.client_id} = ${new_profile.client_id} AND
     ${clients_last_seen.submission_date} = DATE_ADD(${new_profile.submission_timestamp_date}, INTERVAL 6 day);;
   }
