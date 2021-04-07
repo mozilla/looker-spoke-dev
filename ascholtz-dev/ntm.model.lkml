@@ -83,7 +83,7 @@ explore: session {
   join: country_buckets {
     type: cross
     relationship: many_to_one
-    sql_where: ${country_buckets.name} = ${session.standardized_country_name} OR
+    sql_where:
       (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") ;;
   }
 }
