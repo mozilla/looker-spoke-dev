@@ -67,7 +67,7 @@ explore: install  {
 
 explore: new_profile {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
-    (${clients_last_seen.submission_date} IS NULL OR ${clients_last_seen.submission_date} > date(2020, 7 ,1))
+    (${clients_last_seen.submission_date} IS NULL OR ${clients_last_seen.submission_date} > date(2020, 7 ,1)) AND
     ${channel} = "release" AND
     DATE_DIFF(  -- Only use builds from the last month
       ${submission_timestamp_date},
