@@ -86,7 +86,6 @@ explore: new_profile {
   join: clients_last_seen {
     type: left_outer
     relationship: one_to_one
-    sql_where: ${clients_last_seen.submission_date} > date(2020, 7 ,1) ;;
     sql_on: ${clients_last_seen.client_id} = ${new_profile.client_id} AND
     ${clients_last_seen.submission_date} = DATE_ADD(${new_profile.submission_timestamp_date}, INTERVAL 6 day);;
   }
@@ -116,4 +115,5 @@ explore: country_codes_v1 {
 
 explore: clients_last_seen {
   hidden: yes
+  sql_always_where: ${submission_date} > date(2020, 7, 1) ;;
 }
