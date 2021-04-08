@@ -5,5 +5,5 @@ local_dependency: {
 }
 
 local_dependency: {
-  project: "looker-spoke-default"
+  project: "spoke-default"
 }
