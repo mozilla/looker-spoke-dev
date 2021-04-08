@@ -140,6 +140,4 @@ view: releases {
   }
 }
 
-explore: releases {
-  hidden: yes
-}
+explore: releases {}
