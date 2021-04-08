@@ -131,3 +131,15 @@ explore: clients_last_seen {
   hidden: yes
   sql_always_where: ${submission_date} > date(2020, 7, 1) ;;
 }
+
+view: releases {
+  derived_table: {
+    sql: SELECT '2021-03-23' AS date, "87.0" AS version
+    UNION ALL
+    SELECT '2021-02-23' AS date, "86.0" AS version;;
+  }
+}
+
+explore: releases {
+  hidden: yes
+}
