@@ -4,15 +4,13 @@ view: activation {
       WITH clients_last_seen AS (
         SELECT client_id, submission_date, days_seen_bits
         FROM `mozdata.telemetry.clients_last_seen`
-        WHERE submission_date >= DATE_ADD({% date_start date_filter %}, INTERVAL 6 DAY) AND
-          submission_date <= DATE_ADD({% date_end date_filter %}, INTERVAL 6 DAY)
+        WHERE submission_date >= DATE_ADD(DATE({% date_start date_filter %}), INTERVAL 6 DAY) AND
+          submission_date <= DATE_ADD(DATE({% date_end date_filter %}), INTERVAL 6 DAY)
       )
       SELECT
         new_profile.client_id,
         submission_timestamp,
         normalized_country_code,
-        succeeded,
-        silent,
         environment.settings.attribution.source AS attribution_source,
         environment.partner.distribution_id AS distribution_id,
         coalesce(environment.settings.attribution.ua, "") AS attribution_ua,
@@ -53,16 +51,6 @@ view: activation {
   dimension: normalized_country_code {
     type: string
     sql: ${TABLE}.normalized_country_code ;;
-  }
-
-  dimension: succeeded {
-    type: yesno
-    sql: ${TABLE}.succeeded ;;
-  }
-
-  dimension: silent {
-    type: yesno
-    sql: ${TABLE}.silent ;;
   }
 
   dimension: attribution_source {
