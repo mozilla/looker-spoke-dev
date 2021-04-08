@@ -138,6 +138,16 @@ view: releases {
     UNION ALL
     SELECT '2021-02-23' AS date, "86.0" AS version;;
   }
+
+  dimension: date {
+    type: date
+    sql: ${TABLE}.date ;;
+  }
+
+  dimension: version {
+    type: string
+    sql:  ${TABLE}.version ;;
+  }
 }
 
 explore: releases {}
