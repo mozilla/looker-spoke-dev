@@ -83,12 +83,6 @@ explore: new_profile {
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${new_profile.normalized_country_code} ;;
   }
-  join: clients_last_seen {
-    type: left_outer
-    relationship: one_to_one
-    sql_on: ${clients_last_seen.client_id} = ${new_profile.client_id} AND
-    ${clients_last_seen.submission_date} = DATE_ADD(${new_profile.submission_timestamp_date}, INTERVAL 6 day);;
-  }
 }
 
 explore: session {
