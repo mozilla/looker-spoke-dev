@@ -120,6 +120,11 @@ explore: activation {
     ${distribution_id} IS NULL AND
     ${attribution_ua} != "firefox" AND
     ${startup_profile_selection_reason} = "firstrun-created-default";;
+  join: country_buckets {
+    type: cross
+    relationship: many_to_one
+    sql_where: ${country_buckets.code} = ${activation.normalized_country_code} ;;
+  }
 }
 
 explore: clients_last_seen {
