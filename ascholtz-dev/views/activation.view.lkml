@@ -4,8 +4,8 @@ view: activation {
       WITH clients_last_seen AS (
         SELECT client_id, submission_date, days_seen_bits
         FROM `mozdata.telemetry.clients_last_seen`
-        WHERE submission_date >= DATE_ADD(DATE({% date_start date_filter %}), INTERVAL 6 DAY) AND
-          submission_date <= DATE_ADD(DATE({% date_end date_filter %}), INTERVAL 6 DAY)
+        WHERE submission_date >= DATE_ADD(DATE({% date_start submission_timestamp_date %}), INTERVAL 6 DAY) AND
+          submission_date <= DATE_ADD(DATE({% date_end submission_timestamp_date %}), INTERVAL 6 DAY)
       )
       SELECT
         new_profile.client_id,
@@ -24,9 +24,6 @@ view: activation {
       ON clients_last_seen.client_id = new_profile.client_id AND
         DATE_ADD(DATE(new_profile.submission_timestamp), INTERVAL 6 DAY) = clients_last_seen.submission_date
       ;;
-  }
-  filter: date_filter {
-    type: date
   }
 
   dimension_group: submission_timestamp {
