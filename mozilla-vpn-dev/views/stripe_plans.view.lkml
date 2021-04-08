@@ -3,52 +3,46 @@ explore: stripe_plans {
   hidden: yes
 
   join: stripe_plans__tiers {
-    view_label: "Plans: Tiers"
-    sql: LEFT JOIN UNNEST(${stripe_plans.tiers}) as plans__tiers ;;
-    relationship: one_to_many
-  }
-
-  join: stripe_plans__metadata {
-    view_label: "Plans: Metadata"
-    sql: LEFT JOIN UNNEST(${stripe_plans.metadata}) as plans__metadata ;;
+    view_label: "Stripe Plans: Tiers"
+    sql: LEFT JOIN UNNEST(${stripe_plans.tiers}) as stripe_plans__tiers;;
     relationship: one_to_many
   }
 }
 
 view: stripe_plans {
-  sql_table_name: `mozdata.stripe.plans`
-    ;;
-  drill_fields: [id]
+  sql_table_name: `mozdata.stripe.plans`;;
 
   dimension: id {
     primary_key: yes
+    hidden: yes
     type: string
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.id;;
   }
 
   dimension: active {
     type: yesno
-    sql: ${TABLE}.active ;;
+    sql: ${TABLE}.active;;
   }
 
   dimension: aggregate_usage {
+    hidden: yes
     type: string
-    sql: ${TABLE}.aggregate_usage ;;
+    sql: ${TABLE}.aggregate_usage;;
   }
 
   dimension: amount {
     type: number
-    sql: ${TABLE}.amount ;;
+    sql: ${TABLE}.amount;;
   }
 
   dimension: amount_decimal {
     type: string
-    sql: ${TABLE}.amount_decimal ;;
+    sql: ${TABLE}.amount_decimal;;
   }
 
   dimension: billing_scheme {
     type: string
-    sql: ${TABLE}.billing_scheme ;;
+    sql: ${TABLE}.billing_scheme;;
   }
 
   dimension_group: created {
@@ -62,15 +56,16 @@ view: stripe_plans {
       quarter,
       year
     ]
-    sql: ${TABLE}.created ;;
+    sql: ${TABLE}.created;;
   }
 
   dimension: currency {
     type: string
-    sql: ${TABLE}.currency ;;
+    sql: ${TABLE}.currency;;
   }
 
   dimension_group: event_timestamp {
+    hidden: yes
     type: time
     timeframes: [
       raw,
@@ -81,119 +76,105 @@ view: stripe_plans {
       quarter,
       year
     ]
-    sql: ${TABLE}.event_timestamp ;;
+    sql: ${TABLE}.event_timestamp;;
   }
 
   dimension: interval {
     type: string
-    sql: ${TABLE}.`interval` ;;
+    sql: ${TABLE}.`interval`;;
   }
 
   dimension: interval_count {
     type: number
-    sql: ${TABLE}.interval_count ;;
+    sql: ${TABLE}.interval_count;;
   }
 
   dimension: livemode {
+    hidden: yes
     type: yesno
-    sql: ${TABLE}.livemode ;;
+    sql: ${TABLE}.livemode;;
   }
 
   dimension: metadata {
     hidden: yes
-    sql: ${TABLE}.metadata ;;
+    sql: ${TABLE}.metadata;;
   }
 
   dimension: nickname {
     type: string
-    sql: ${TABLE}.nickname ;;
+    sql: ${TABLE}.nickname;;
   }
 
   dimension: object {
+    hidden: yes
     type: string
-    sql: ${TABLE}.object ;;
+    sql: ${TABLE}.object;;
   }
 
   dimension: product {
+    hidden: yes
     type: string
-    sql: ${TABLE}.product ;;
+    sql: ${TABLE}.product;;
   }
 
   dimension: tiers {
     hidden: yes
-    sql: ${TABLE}.tiers ;;
+    sql: ${TABLE}.tiers;;
   }
 
   dimension: tiers_mode {
     type: string
-    sql: ${TABLE}.tiers_mode ;;
+    sql: ${TABLE}.tiers_mode;;
   }
 
   dimension: transform_usage__divide_by {
     type: number
-    sql: ${TABLE}.transform_usage.divide_by ;;
+    sql: ${TABLE}.transform_usage.divide_by;;
     group_label: "Transform Usage"
     group_item_label: "Divide By"
   }
 
   dimension: transform_usage__round {
     type: string
-    sql: ${TABLE}.transform_usage.round ;;
+    sql: ${TABLE}.transform_usage.round;;
     group_label: "Transform Usage"
     group_item_label: "Round"
   }
 
   dimension: trial_period_days {
     type: number
-    sql: ${TABLE}.trial_period_days ;;
+    sql: ${TABLE}.trial_period_days;;
   }
 
   dimension: usage_type {
     type: string
-    sql: ${TABLE}.usage_type ;;
-  }
-
-  measure: count {
-    type: count
-    drill_fields: [id, nickname]
+    sql: ${TABLE}.usage_type;;
   }
 }
 
 view: stripe_plans__tiers {
   dimension: flat_amount {
     type: number
-    sql: ${TABLE}.flat_amount ;;
+    sql: ${TABLE}.flat_amount;;
   }
 
   dimension: flat_amount_decimal {
     type: string
-    sql: ${TABLE}.flat_amount_decimal ;;
+    sql: ${TABLE}.flat_amount_decimal;;
   }
 
   dimension: unit_amount {
     type: number
-    sql: ${TABLE}.unit_amount ;;
+    sql: ${TABLE}.unit_amount;;
   }
 
   dimension: unit_amount_decimal {
     type: string
-    sql: ${TABLE}.unit_amount_decimal ;;
+    sql: ${TABLE}.unit_amount_decimal;;
   }
 
   dimension: up_to {
     type: number
-    sql: ${TABLE}.up_to ;;
-  }
-}
-
-view: stripe_plans__metadata {
-  dimension: key {
-    type: string
-    sql: ${TABLE}.key ;;
-  }
-
-  dimension: value {
-    type: string
-    sql: ${TABLE}.value ;;
+    sql: ${TABLE}.up_to;;
   }
 }

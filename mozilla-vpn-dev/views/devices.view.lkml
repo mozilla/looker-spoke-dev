@@ -1,6 +1,12 @@
 view: devices {
-  sql_table_name: `mozdata.mozilla_vpn.devices`
-    ;;
+  sql_table_name: `mozdata.mozilla_vpn.devices`;;
+
+  # dimension: id {
+  #   type: number
+  #   primary_key: yes
+  #   hidden: yes
+  #   sql: ${TABLE}.id;;
+  # }
 
   dimension_group: created {
     type: time
@@ -13,12 +19,12 @@ view: devices {
       quarter,
       year
     ]
-    sql: ${TABLE}.created_at ;;
+    sql: ${TABLE}.created_at;;
   }
 
   dimension: platform {
     type: string
-    sql: ${TABLE}.platform ;;
+    sql: ${TABLE}.platform;;
   }
 
   dimension_group: updated {
@@ -32,22 +38,28 @@ view: devices {
       quarter,
       year
     ]
-    sql: ${TABLE}.updated_at ;;
+    sql: ${TABLE}.updated_at;;
   }
 
   dimension: user_id {
     type: number
-    # hidden: yes
-    sql: ${TABLE}.user_id ;;
+    hidden: yes
+    sql: ${TABLE}.user_id;;
   }
 
   dimension: useragent {
     type: string
-    sql: ${TABLE}.useragent ;;
+    sql: ${TABLE}.useragent;;
   }
 
   measure: count {
-    type: count
-    drill_fields: [users.id]
+    # can't use "type: count" because id is not exposed (yet)
+    type: number
+    sql: COUNT(*);;
   }
+
+  # measure: devices {
+  #   type: count_distinct
+  #   sql_distinct_key: ${id};;
+  # }
 }

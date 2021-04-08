@@ -1,22 +1,12 @@
 # Un-hide and use this explore, or copy the joins into another explore, to get all the fully nested relationships from this view
-explore: stripe_customers {
-  hidden: yes
-
-  join: stripe_customers__metadata {
-    view_label: "Customers: Metadata"
-    sql: LEFT JOIN UNNEST(${stripe_customers.metadata}) as customers__metadata ;;
-    relationship: one_to_many
-  }
-}
-
 view: stripe_customers {
-  sql_table_name: `mozdata.stripe.customers`
-    ;;
+  sql_table_name: `mozdata.stripe.customers`;;
 
   dimension: id {
+    hidden: yes
     primary_key: yes
     type: string
-    sql: ${TABLE}.id ;;
+    sql: ${TABLE}.id;;
   }
 
   dimension_group: created {
@@ -30,28 +20,21 @@ view: stripe_customers {
       quarter,
       year
     ]
-    sql: ${TABLE}.created ;;
+    sql: ${TABLE}.created;;
   }
 
   dimension: metadata {
     hidden: yes
-    sql: ${TABLE}.metadata ;;
+    sql: ${TABLE}.metadata;;
+  }
+
+  dimension: fxa_uid {
+    hidden: yes
+    type: string
+    sql:  mozfun.map.get_key(${TABLE}.metadata, "fxa_uid");;
   }
 
   measure: count {
     type: count
-    drill_fields: [id]
-  }
-}
-
-view: stripe_customers__metadata {
-  dimension: key {
-    type: string
-    sql: ${TABLE}.key ;;
-  }
-
-  dimension: value {
-    type: string
-    sql: ${TABLE}.value ;;
   }
 }

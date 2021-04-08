@@ -1,6 +1,5 @@
 view: protected {
-  sql_table_name: `mozdata.mozilla_vpn.protected`
-    ;;
+  sql_table_name: `mozdata.mozilla_vpn.protected`;;
 
   dimension_group: first_protected {
     type: time
@@ -13,16 +12,17 @@ view: protected {
       quarter,
       year
     ]
-    sql: ${TABLE}.first_protected ;;
+    sql: ${TABLE}.first_protected;;
   }
 
   dimension: fxa_uid {
+    hidden: yes
+    primary_key: yes
     type: string
-    sql: ${TABLE}.fxa_uid ;;
+    sql: ${TABLE}.fxa_uid;;
   }
 
   measure: count {
     type: count
-    drill_fields: []
   }
 }
