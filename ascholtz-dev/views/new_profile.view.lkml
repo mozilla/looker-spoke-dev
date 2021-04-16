@@ -3,7 +3,6 @@ view: new_profile {
     ;;
 
   dimension_group: submission_timestamp {
-    hidden: yes
     type: time
     timeframes: [
       raw,
