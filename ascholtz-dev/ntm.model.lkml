@@ -46,6 +46,23 @@ view: country_buckets {
 
 explore: country_buckets {}
 
+explore: numbers_that_matter {
+  from: install
+  join: country_buckets {
+    type: cross
+    relationship: many_to_one
+    sql_where: ${country_buckets.code} = ${numbers_that_matter.normalized_country_code} ;;
+  }
+  join: new_profile {
+    type: left_outer
+    relationship: one_to_one
+    sql_on:
+      ${new_profile.submission_timestamp_date} = ${numbers_that_matter.submission_timestamp_date} AND
+      ${numbers_that_matter.normalized_country_code} = ${new_profile.normalized_country_code};;
+  }
+}
+
+
 explore: install  {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
     ${succeeded} AND
@@ -131,23 +148,3 @@ explore: clients_last_seen {
   hidden: yes
   sql_always_where: ${submission_date} > date(2020, 7, 1) ;;
 }
-
-view: releases {
-  derived_table: {
-    sql: SELECT '2021-03-23' AS date, "87.0" AS version
-    UNION ALL
-    SELECT '2021-02-23' AS date, "86.0" AS version;;
-  }
-
-  dimension: date {
-    type: date
-    sql: ${TABLE}.date ;;
-  }
-
-  dimension: version {
-    type: string
-    sql:  ${TABLE}.version ;;
-  }
-}
-
-explore: releases {}

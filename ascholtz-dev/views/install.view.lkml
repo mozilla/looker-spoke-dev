@@ -17,36 +17,43 @@ view: install {
   }
 
   dimension: had_old_install {
+    hidden: yes
     type: yesno
     sql: ${TABLE}.had_old_install ;;
   }
 
   dimension: normalized_country_code {
+    hidden: yes
     type: string
     sql: ${TABLE}.normalized_country_code ;;
   }
 
   dimension: succeeded {
+    hidden: yes
     type: yesno
     sql: ${TABLE}.succeeded ;;
   }
 
   dimension: silent {
+    hidden: yes
     type: yesno
     sql: ${TABLE}.silent ;;
   }
 
   dimension: attribution {
+    hidden: yes
     type: string
     sql: IF(${TABLE}.attribution IS NULL, "Unknown", SPLIT(SPLIT(${TABLE}.attribution, '26ua%3D')[SAFE_OFFSET(1)], '%')[SAFE_OFFSET(0)]) ;;
   }
 
   dimension: build_channel {
+    hidden: yes
     type: string
     sql: ${TABLE}.build_channel ;;
   }
 
   dimension: build_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.build_id ;;
   }
