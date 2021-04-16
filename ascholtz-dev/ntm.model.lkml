@@ -60,7 +60,7 @@ explore: install2 {
     sql_on:
       ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
       ${install2.normalized_country_code} = ${new_profile.normalized_country_code};;
-    sql_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
+    sql_where: ${new_profile.submission_timestamp_date} > date(2020, 7 ,1) AND
     ${new_profile.channel} = "release" AND
     DATE_DIFF(  -- Only use builds from the last month
       ${new_profile.submission_timestamp_date},
