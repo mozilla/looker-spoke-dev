@@ -56,7 +56,7 @@ explore: install2 {
   }
   join: new_profile {
     type: left_outer
-    relationship: one_to_one
+    relationship: many_to_one
     sql_on:
       ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
       ${install2.normalized_country_code} = ${new_profile.normalized_country_code};;
@@ -73,16 +73,55 @@ explore: install2 {
     ${new_profile.attribution_ua} != "firefox" AND
     ${new_profile.startup_profile_selection_reason} = "firstrun-created-default";;
   }
-    sql_always_where: ${install2.submission_timestamp_date} > date(2020, 7 ,1) AND
-    ${install2.succeeded} AND
-    (${install2.silent} = FALSE OR ${silent} IS NULL) AND
-    ${install2.build_channel} = "release" AND
-    DATE_DIFF(  -- Only use builds from the last month
-    ${install2.submission_timestamp_date},
-    SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${install2.build_id}, 0, 8)),
-    MONTH
-    ) <= 1 AND
-    ${install2.attribution} IN ("chrome", "ie", "edge");;
+  join: session {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
+    (
+      (${session.standardized_country_name} = "USA" AND ${country_buckets.code} = "US") OR
+      (${country_buckets.code} = "GB" AND ${session.standardized_country_name} = "United Kingdom") OR
+      (${country_buckets.code} = "DE" AND ${session.standardized_country_name} = "Germany") OR
+      (${country_buckets.code} = "FR" AND ${session.standardized_country_name} = "France") OR
+      (${country_buckets.code} = "CA" AND ${session.standardized_country_name} = "Canada") OR
+      (${country_buckets.code} = "BR" AND ${session.standardized_country_name} = "Brazil") OR
+      (${country_buckets.code} = "MX" AND ${session.standardized_country_name} = "Mexico") OR
+      (${country_buckets.code} = "CN" AND ${session.standardized_country_name} = "China") OR
+      (${session.standardized_country_name} NOT IN ("USA", "Germany", "United Kingdom", "France", "Canada", "Mexico", "China", "Brazil") AND ${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" ));;
+    sql_where: ${session.operating_system} = "Windows" and ${session.browser} != "Mozilla";;
+  }
+  join: activation {
+    type: left_outer
+    relationship: many_to_one
+    sql_on: ${activation.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
+      ${install2.normalized_country_code} = ${activation.normalized_country_code};;
+    sql_where: ${activation.submission_timestamp_date} > date(2020, 7 ,1) AND
+      ${activation.channel} = "release" AND
+      DATE_DIFF(  -- Only use builds from the last month
+      ${activation.submission_timestamp_date},
+      SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${activation.build_id}, 0, 8)),
+      MONTH
+      ) <= 1 AND
+      ${activation.os} = "Windows" AND
+      ${activation.attribution_source} IS NOT NULL AND
+      ${activation.distribution_id} IS NULL AND
+      ${activation.attribution_ua} != "firefox" AND
+      ${activation.startup_profile_selection_reason} = "firstrun-created-default";;
+  }
+  join: releases {
+    type: left_outer
+    relationship: one_to_many
+    sql_on: ${install2.submission_timestamp_date} = ${releases.date_date} ;;
+  }
+  sql_always_where: ${install2.submission_timestamp_date} > date(2020, 7 ,1) AND
+  ${install2.succeeded} AND
+  (${install2.silent} = FALSE OR ${silent} IS NULL) AND
+  ${install2.build_channel} = "release" AND
+  DATE_DIFF(  -- Only use builds from the last month
+  ${install2.submission_timestamp_date},
+  SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${install2.build_id}, 0, 8)),
+  MONTH
+  ) <= 1 AND
+  ${install2.attribution} IN ("chrome", "ie", "edge");;
 }
 
 
