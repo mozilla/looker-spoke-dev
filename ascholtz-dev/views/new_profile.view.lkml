@@ -88,12 +88,12 @@ view: new_profile {
     sql: SELECT ROW_NUMBER() OVER (PARTITION BY client_id) ;;
   }
 
-  parameter: date_filter {
+  filter: date_filter {
     type: date
   }
 
   dimension: previous_period_date {
-    type: duration_day
+    type: date
     sql: DATE(DATE_SUB(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date_filter%}), DATE({% date_end date_filter%}), DAY) DAY)) ;;
   }
 
