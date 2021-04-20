@@ -94,7 +94,7 @@ view: new_profile {
 
   dimension: previous_period_date {
     type: date
-    sql: DATE(DATE_SUB(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date_filter%}), DATE({% date_end date_filter%}), DAY) DAY)) ;;
+    sql: DATE(DATE_DD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date_filter%}), DATE({% date_end date_filter%}), DAY) DAY)) ;;
   }
 
   measure: new_profiles {
