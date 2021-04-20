@@ -56,7 +56,7 @@ explore: install2 {
   }
   join: new_profile {
     type: cross
-    relationship: many_to_one
+    relationship: one_to_one
     required_joins: [country_buckets]
     sql_where:
     ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
