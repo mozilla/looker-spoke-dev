@@ -55,13 +55,13 @@ explore: install2 {
     sql_where: ${country_buckets.code} = ${install2.normalized_country_code} ;;
   }
   join: new_profile {
-    type: left_outer
-    relationship: one_to_many
+    type: cross
+    relationship: many_to_one
     required_joins: [country_buckets]
-    sql_on:
-      ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
-      ${country_buckets.code} = ${new_profile.normalized_country_code};;
-    sql_where: ${new_profile.submission_timestamp_date} > date(2020, 7 ,1) AND
+    sql_where:
+    ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
+      ${country_buckets.code} = ${new_profile.normalized_country_code} AND
+    ${new_profile.submission_timestamp_date} > date(2020, 7 ,1) AND
     ${new_profile.channel} = "release" AND
     DATE_DIFF(  -- Only use builds from the last month
       ${new_profile.submission_timestamp_date},
