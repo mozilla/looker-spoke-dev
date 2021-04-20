@@ -147,6 +147,7 @@ explore: install  {
 
 
 explore: new_profile {
+  view_name: new_profile
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
     ${channel} = "release" AND
     DATE_DIFF(  -- Only use builds from the last month
@@ -164,6 +165,11 @@ explore: new_profile {
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${new_profile.normalized_country_code} ;;
   }
+}
+
+explore: previous_new_profile {
+  extends: [new_profile]
+  from:  new_profile
 }
 
 explore: session {
