@@ -56,7 +56,7 @@ explore: install2 {
   }
   join: new_profile {
     type: left_outer
-    relationship: one_to_many
+    relationship: many_to_one
     sql_on:
       ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
       ${install2.normalized_country_code} = ${new_profile.normalized_country_code};;
