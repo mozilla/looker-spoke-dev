@@ -59,7 +59,7 @@ explore: install2 {
     relationship: one_to_one
     required_joins: [country_buckets]
     sql_where:
-    ${new_profile.submission_timestamp_date} BETWEN {% date_start install2.submission_timestamp_date %} AND {% date_end install2.submission_timestamp_date %} AND
+    ${new_profile.submission_timestamp_date} BETWEEN {% date_start install2.submission_timestamp_date %} AND {% date_end install2.submission_timestamp_date %} AND
     ${new_profile.submission_timestamp_date} = ${install2.submission_timestamp_date} AND
       ${country_buckets.code} = ${new_profile.normalized_country_code} AND
     ${new_profile.submission_timestamp_date} > date(2020, 7 ,1) AND
