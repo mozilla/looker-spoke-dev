@@ -31,10 +31,10 @@ explore: install {
       ${activation.normalized_country_code} = ${install.normalized_country_code};;
   }
   join: session {
-    type: left_outer
+    type: full_outer
     relationship: one_to_one
     sql_on: ${session.submission_date} = ${install.submission_date} AND
-      ${session.country_code} = ${country_buckets.code};;
+      ${session.country_code} = ${install.normalized_country_code};;
   }
 }
 
