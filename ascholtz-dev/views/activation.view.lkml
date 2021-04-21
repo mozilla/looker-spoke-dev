@@ -41,7 +41,10 @@ view: activation {
         attribution_source IS NOT NULL AND
         distribution_id IS NULL AND
         attribution_ua != "firefox" AND
-        startup_profile_selection_reason = "firstrun-created-default";;
+        startup_profile_selection_reason = "firstrun-created-default"
+      GROUP BY
+        submission_date,
+        normalized_country_code;;
   }
 
   dimension: submission_date {
