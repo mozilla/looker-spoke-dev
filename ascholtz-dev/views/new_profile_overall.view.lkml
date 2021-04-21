@@ -37,4 +37,9 @@ view: new_profile_overall {
     type: number
     sql: ${TABLE}.new_profiles ;;
   }
+
+  measure: new_profiles_total {
+    type: sum
+    sql: ${new_profiles} ;;
+  }
 }

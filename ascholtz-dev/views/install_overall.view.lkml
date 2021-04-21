@@ -41,4 +41,14 @@ view: install_overall {
     type: number
     sql: ${TABLE}.new_installs ;;
   }
+
+  measure: new_installs_total {
+    type: sum
+    sql: ${new_installs} ;;
+  }
+
+  measure: paveovers_total {
+    type: sum
+    sql: ${paveovers} ;;
+  }
 }
