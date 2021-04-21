@@ -218,3 +218,12 @@ explore: clients_last_seen {
   hidden: yes
   sql_always_where: ${submission_date} > date(2020, 7, 1) ;;
 }
+
+explore: install_overall {
+  label: "NTM"
+  join: new_profile_overall {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${new_profile_overall.submission_date} = ${install_overall.submission_date} AND ${new_profile_overall.normalized_country_code} = ${install_overall.normalized_country_code} ;;
+  }
+}
