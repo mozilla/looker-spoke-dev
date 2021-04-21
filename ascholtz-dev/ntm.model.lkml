@@ -24,6 +24,18 @@ explore: install {
     relationship: one_to_one
     sql_on: ${new_profile.submission_date} = ${install.submission_date} AND ${new_profile.normalized_country_code} = ${install.normalized_country_code} ;;
   }
+  join: activation {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${activation.submission_date} = ${install.submission_date} AND
+      ${activation.normalized_country_code} = ${install.normalized_country_code};;
+  }
+  join: session {
+    type: left_outer
+    relationship: one_to_one
+    sql_on: ${session.submission_date} = ${install.submission_date} AND
+      ${session.country_code} = ${country_buckets.code};;
+  }
 }
 
 # explore: install2 {

@@ -4,8 +4,8 @@ view: activation {
       WITH clients_last_seen AS (
         SELECT client_id, submission_date, days_seen_bits
         FROM `mozdata.telemetry.clients_last_seen`
-        WHERE submission_date >= DATE_ADD(DATE({% date_start submission_timestamp_date %}), INTERVAL 6 DAY) AND
-          submission_date <= DATE_ADD(DATE({% date_end submission_timestamp_date %}), INTERVAL 6 DAY)
+        WHERE submission_date >= DATE_ADD(DATE({% date_start submission_date %}), INTERVAL 6 DAY) AND
+          submission_date <= DATE_ADD(DATE({% date_end submission_date %}), INTERVAL 6 DAY)
       ), profiles AS (
         SELECT
           new_profile.client_id,
@@ -33,7 +33,7 @@ view: activation {
         DATE(submission_timestamp) > date(2020, 7 ,1) AND
         channel = "release" AND
         DATE_DIFF(  -- Only use builds from the last month
-          DATE(submission_timestamp_date),
+          DATE(submission_timestamp),
         SAFE.PARSE_DATE('%Y%m%d', SUBSTR(build_id, 0, 8)),
         MONTH
         ) <= 1 AND
