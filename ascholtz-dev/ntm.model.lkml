@@ -226,4 +226,14 @@ explore: install_overall {
     relationship: one_to_one
     sql_on: ${new_profile_overall.submission_date} = ${install_overall.submission_date} AND ${new_profile_overall.normalized_country_code} = ${install_overall.normalized_country_code} ;;
   }
+  join: country_buckets {
+    type: cross
+    relationship: many_to_one
+    sql_where: ${install_overall.normalized_country_code} = ${country_buckets.code} ;;
+  }
+  join: releases {
+    type: cross
+    relationship: many_to_one
+    sql_where: ${releases.date_date} = ${install_overall.submission_date} ;;
+  }
 }

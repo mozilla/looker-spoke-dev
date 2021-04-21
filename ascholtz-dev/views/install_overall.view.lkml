@@ -16,7 +16,7 @@ view: install_overall {
           SAFE.PARSE_DATE('%Y%m%d', SUBSTR(build_id, 0, 8)),
           MONTH
       ) <= 1 AND
-      attribution IN ("chrome", "ie", "edge")
+      IF(attribution IS NULL, "Unknown", SPLIT(SPLIT(attribution, '26ua%3D')[SAFE_OFFSET(1)], '%')[SAFE_OFFSET(0)]) IN ("chrome", "ie", "edge")
     GROUP BY
       submission_date,
       normalized_country_code;;
