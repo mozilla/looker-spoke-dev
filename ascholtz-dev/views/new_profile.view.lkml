@@ -87,6 +87,11 @@ view: new_profile {
     sql: DATE(DATE_ADD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start submission_timestamp_date%}), DATE({% date_end submission_timestamp_date%}), DAY) DAY)) ;;
   }
 
+  dimension: next_period_date {
+    type: date
+    sql: DATE(DATE_SUB(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start submission_timestamp_date%}), DATE({% date_end submission_timestamp_date%}), DAY) DAY)) ;;
+  }
+
   measure: new_profiles {
     type: count
     filters: [startup_profile_selection_reason: "firstrun-created-default"]

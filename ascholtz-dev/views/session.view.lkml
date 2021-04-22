@@ -63,6 +63,11 @@ view: session {
     sql: DATE(DATE_ADD(${date_date}, INTERVAL DATE_DIFF(DATE({% date_start date_date%}), DATE({% date_end date_date%}), DAY) DAY)) ;;
   }
 
+  dimension: next_period_date {
+    type: date
+    sql: DATE(DATE_SUB(${date_date}, INTERVAL DATE_DIFF(DATE({% date_start date_date%}), DATE({% date_end date_date%}), DAY) DAY)) ;;
+  }
+
   measure: total_non_fx_sessions {
     type: sum
     sql: ${TABLE}.non_fx_sessions ;;

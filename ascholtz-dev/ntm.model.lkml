@@ -9,7 +9,13 @@ explore: country_buckets {
   hidden: yes
 }
 
-explore: releases {}
+explore: releases {
+  always_filter: {
+    filters: [
+      releases.category: "major"
+    ]
+  }
+}
 
 explore: install  {
   sql_always_where: ${submission_timestamp_date} > date(2020, 7 ,1) AND
