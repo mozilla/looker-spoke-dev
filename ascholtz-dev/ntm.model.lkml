@@ -1,3 +1,5 @@
+  label: "Numbers that Matter"
+
 connection: "telemetry"
 
 include: "views/*.view.lkml"
@@ -32,9 +34,9 @@ explore: install {
   }
   join: session {
     type: full_outer
-    relationship: one_to_one
+    relationship: many_to_one
     sql_on: ${session.submission_date} = ${install.submission_date} AND
-      ${session.country_code} = ${install.normalized_country_code};;
+      ${session.country_code} = ${country_buckets.code};;
   }
 }
 
