@@ -14,7 +14,7 @@ explore: install {
   join: country_buckets {
     type: full_outer
     relationship: many_to_one
-    sql_where: ${country_buckets.code} = ${install.normalized_country_code} ;;
+    sql_on: ${country_buckets.code} = ${install.normalized_country_code} ;;
   }
   join: releases {
     type: left_outer
