@@ -65,7 +65,7 @@ view: install {
 
   dimension: period_date {
     type: date
-    sql: IF({previous_time_period}, DATE(DATE_ADD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start submission_timestamp_date%}), DATE({% date_end submission_timestamp_date%}), DAY) DAY)), ${submission_timestamp_date}) ;;
+    sql: IF({% parameter previous_time_period %}, DATE(DATE_ADD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start submission_timestamp_date%}), DATE({% date_end submission_timestamp_date%}), DAY) DAY)), ${submission_timestamp_date}) ;;
   }
 
   measure: new_installs {
