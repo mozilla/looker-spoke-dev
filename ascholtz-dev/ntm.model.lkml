@@ -51,7 +51,7 @@ explore: new_profile {
 
   always_filter: {
     filters: [
-      date: "28days"
+      new_profile.submission_timestamp_date: "28 days"
     ]
   }
 }
