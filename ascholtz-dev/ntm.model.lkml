@@ -12,7 +12,7 @@ explore: country_buckets {
 explore: install {
   label: "Numbers that Matter"
   join: country_buckets {
-    type: cross
+    type: full_outer
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${install.normalized_country_code} ;;
   }
@@ -33,7 +33,7 @@ explore: install {
       ${activation.normalized_country_code} = ${install.normalized_country_code};;
   }
   join: session {
-    type: full_outer
+    type: left_outer
     relationship: many_to_one
     sql_on: ${session.submission_date} = ${install.submission_date} AND
       ${session.country_code} = ${country_buckets.code};;
