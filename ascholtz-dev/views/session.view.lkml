@@ -58,6 +58,11 @@ view: session {
     sql: ${TABLE}.standardized_country_name ;;
   }
 
+  dimension: previous_period_date {
+    type: date
+    sql: DATE(DATE_ADD(${date_date}, INTERVAL DATE_DIFF(DATE({% date_start date_date%}), DATE({% date_end date_date%}), DAY) DAY)) ;;
+  }
+
   measure: total_non_fx_sessions {
     type: sum
     sql: ${TABLE}.non_fx_sessions ;;

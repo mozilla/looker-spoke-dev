@@ -82,12 +82,6 @@ view: new_profile {
     sql: ${TABLE}.payload.processes.parent.scalars.startup_profile_selection_reason  ;;
   }
 
-  dimension: rn {
-    hidden: yes
-    type: number
-    sql: SELECT ROW_NUMBER() OVER (PARTITION BY client_id) ;;
-  }
-
   dimension: previous_period_date {
     type: date
     sql: DATE(DATE_ADD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start submission_timestamp_date%}), DATE({% date_end submission_timestamp_date%}), DAY) DAY)) ;;
