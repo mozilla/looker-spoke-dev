@@ -48,12 +48,6 @@ explore: new_profile {
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${new_profile.normalized_country_code} ;;
   }
-
-  always_filter: {
-    filters: [
-      new_profile.submission_timestamp_date: "28 days"
-    ]
-  }
 }
 
 explore: session {
