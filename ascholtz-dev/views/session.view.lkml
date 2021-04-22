@@ -1,60 +1,70 @@
 view: session {
-  derived_table: {
-    sql:
-      SELECT
-        DATE(date) AS submission_date,
-        CASE standardized_country_name
-          WHEN "USA" THEN "US"
-          WHEN "United Kingdom" THEN "GB"
-          WHEN "Germany" THEN "DE"
-          WHEN "France" THEN "FR"
-          WHEN "Canada" THEN "CA"
-          WHEN "Brazil" THEN "BR"
-          WHEN "Mexico" THEN "MX"
-          WHEN "China" THEN "CN"
-          ELSE "OTHER"
-        END
-        AS country_code,
-        SUM(non_fx_sessions) AS non_fx_sessions,
-        SUM(non_fx_downloads) AS non_fx_downloads
-      FROM `moz-fx-data-marketing-prod.ga_derived.www_site_metrics_summary_v1`
-      WHERE
-        operating_system = "Windows" AND browser != "Mozilla"
-      GROUP BY
-        submission_date,
-        country_code;;
-  }
+  sql_table_name: `moz-fx-data-marketing-prod.ga_derived.www_site_metrics_summary_v1`
+    ;;
 
-  dimension: submission_date {
-    type: date
-    sql: ${TABLE}.submission_date ;;
-  }
-
-  dimension: country_code {
-    hidden: yes
+  dimension: browser {
     type: string
-    sql: ${TABLE}.country_code ;;
+    sql: ${TABLE}.browser ;;
   }
 
-  dimension: non_fx_sessions_count {
+  dimension_group: date {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.date ;;
+  }
+
+  dimension: downloads {
     hidden: yes
     type: number
-    sql: ${TABLE}.non_fx_sessions ;;
+    sql: ${TABLE}.downloads ;;
   }
 
-  dimension: non_fx_downloads_count {
+  dimension: non_fx_downloads {
     hidden: yes
     type: number
     sql: ${TABLE}.non_fx_downloads ;;
   }
 
-  measure: non_fx_sessions {
-    type: sum
-    sql: ${non_fx_sessions_count} ;;
+  dimension: non_fx_sessions {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.non_fx_sessions ;;
   }
 
-  measure: non_fx_downloads {
+  dimension: operating_system {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.operating_system ;;
+  }
+
+  dimension: sessions {
+    hidden: yes
+    type: number
+    sql: ${TABLE}.sessions ;;
+  }
+
+  dimension: standardized_country_name {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.standardized_country_name ;;
+  }
+
+  measure: total_non_fx_sessions {
     type: sum
-    sql: ${non_fx_downloads_count} ;;
+    sql: ${TABLE}.non_fx_sessions ;;
+  }
+
+  measure: total_non_fx_downloads {
+    type: sum
+    sql: ${TABLE}.non_fx_downloads ;;
   }
 }
