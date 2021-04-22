@@ -55,7 +55,13 @@ explore: new_profile {
     sql_on: ${new_profile.submission_timestamp_date} = DATE(DATE_ADD(${prev_new_profile.submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start new_profile.submission_timestamp_date%}), DATE({% date_end new_profile.submission_timestamp_date%}), DAY) DAY)) AND
     ${new_profile.normalized_country_code} = ${prev_new_profile.normalized_country_code};;
     sql_where:
-      DATE(${prev_new_profile.submission_timestamp_raw}) BETWEEN DATE({% date_start new_profile.submission_timestamp_date%}) AND DATE_ADD(DATE({% date_start new_profile.submission_timestamp_date%}), INTERVAL DATE_DIFF(DATE({% date_start new_profile.submission_timestamp_date%}), DATE({% date_end new_profile.submission_timestamp_date%}), DAY) DAY)  ;;
+      DATE(${prev_new_profile.submission_timestamp_raw}) BETWEEN DATE_ADD(DATE({% date_start new_profile.submission_timestamp_date%}), INTERVAL DATE_DIFF(DATE({% date_start new_profile.submission_timestamp_date%}), DATE({% date_end new_profile.submission_timestamp_date%}), DAY) DAY) AND DATE({% date_start new_profile.submission_timestamp_date%})  ;;
+  }
+
+  always_filter: {
+    filters: [
+      new_profile.submission_timestamp_date: "28 days"
+    ]
   }
 }
 
