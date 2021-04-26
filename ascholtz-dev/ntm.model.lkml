@@ -28,7 +28,7 @@ explore: install  {
         MONTH
     ) <= 1 AND
     ${attribution} IN ("chrome", "ie", "edge") AND
-    {% condition install.date %} ${submission_timestamp_date} {% endcondition %};;
+    {% condition install.date %} TIMESTAMP(${submission_timestamp_date}) {% endcondition %};;
   join: country_buckets {
     type: cross
     relationship: many_to_one
