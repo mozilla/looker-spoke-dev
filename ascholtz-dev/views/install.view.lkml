@@ -70,7 +70,7 @@ view: install {
 
   dimension: period_date {
     description: "Date of the relevant time period."
-    type: date_raw
+    type: date
     sql: IF({% parameter previous_time_period %}, DATE(DATE_ADD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) DAY)), ${submission_timestamp_date}) ;;
   }
 
