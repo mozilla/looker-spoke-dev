@@ -27,7 +27,9 @@ explore: install  {
         SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
         MONTH
     ) <= 1 AND
-    ${attribution} IN ("chrome", "ie", "edge");;
+    ${attribution} IN ("chrome", "ie", "edge") AND
+    ${period_date} <= IF({% parameter install.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end install.date %}), INTERVAL DATE_DIFF(DATE({% date_start install.date %}), DATE({% date_end install.date %}), DAY) DAY)), DATE({% date_end install.date %})) AND
+    ${period_date} >= IF({% parameter install.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start install.date %}), INTERVAL DATE_DIFF(DATE({% date_start install.date %}), DATE({% date_end install.date %}), DAY) DAY)), DATE({% date_start install.date %}));;
   join: country_buckets {
     type: cross
     relationship: many_to_one
