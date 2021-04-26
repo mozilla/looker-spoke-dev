@@ -2,11 +2,6 @@ view: install {
   sql_table_name: `mozdata.firefox_installer.install`
     ;;
 
-  parameter: previous_time_period {
-    type: yesno
-    default_value: "no"
-  }
-
   dimension_group: submission_timestamp {
     type: time
     timeframes: [
@@ -19,6 +14,10 @@ view: install {
       year
     ]
     sql: ${TABLE}.submission_timestamp ;;
+  }
+
+  filter: date {
+    type: date
   }
 
   dimension: had_old_install {
@@ -63,7 +62,14 @@ view: install {
     sql: ${TABLE}.build_id ;;
   }
 
+  parameter: previous_time_period {
+    type: yesno
+    description: "Flag to determine whether data from the previous time period should be used. This is to improve filtering."
+    default_value: "no"
+  }
+
   dimension: period_date {
+    description: "Date of the relevant time period."
     type: date
     sql: IF({% parameter previous_time_period %}, DATE(DATE_ADD(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start submission_timestamp_date%}), DATE({% date_end submission_timestamp_date%}), DAY) DAY)), ${submission_timestamp_date}) ;;
   }

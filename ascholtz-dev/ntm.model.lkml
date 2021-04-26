@@ -27,7 +27,8 @@ explore: install  {
         SAFE.PARSE_DATE('%Y%m%d', SUBSTR(${build_id}, 0, 8)),
         MONTH
     ) <= 1 AND
-    ${attribution} IN ("chrome", "ie", "edge");;
+    ${attribution} IN ("chrome", "ie", "edge") AND
+    {% condition install.date %} ${submission_timestamp_date} {% endcondition %};;
   join: country_buckets {
     type: cross
     relationship: many_to_one
