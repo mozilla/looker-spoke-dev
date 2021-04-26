@@ -4,8 +4,8 @@ view: activation {
       WITH clients_last_seen AS (
         SELECT client_id, submission_date, days_seen_bits
         FROM `mozdata.telemetry.clients_last_seen`
-        WHERE submission_date >= DATE_ADD(DATE({% date_start submission_timestamp_date %}), INTERVAL 6 DAY) AND
-          submission_date <= DATE_ADD(DATE({% date_end submission_timestamp_date %}), INTERVAL 6 DAY)
+        WHERE submission_date >= DATE_ADD(DATE({% date_start date %}), INTERVAL 6 DAY) AND
+          submission_date <= DATE_ADD(DATE({% date_end date %}), INTERVAL 6 DAY)
       )
       SELECT
         new_profile.client_id,
