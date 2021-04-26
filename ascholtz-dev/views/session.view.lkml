@@ -64,10 +64,14 @@ view: session {
     default_value: "no"
   }
 
-  dimension: period_date {
-    description: "Date of the relevant time period."
+  filter: date {
     type: date
-    sql: IF({% parameter previous_time_period %}, DATE(DATE_ADD(${date_date}, INTERVAL DATE_DIFF(DATE({% date_start date_date%}), DATE({% date_end date_date%}), DAY) DAY)), ${date_date}) ;;
+  }
+
+  dimension: join_date {
+    description: "Date used for joining installs from different time periods."
+    type: date
+    sql: IF({% parameter previous_time_period %}, DATE(DATE_SUB(${date_date}, INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) DAY)), ${date_date}) ;;
   }
 
   measure: total_non_fx_sessions {
