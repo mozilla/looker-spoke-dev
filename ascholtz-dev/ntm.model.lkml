@@ -35,6 +35,11 @@ explore: install  {
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${install.normalized_country_code} ;;
   }
+  always_filter: {
+    filters: [
+      install.date: "28 day"
+    ]
+  }
 }
 
 explore: new_profile {
@@ -58,6 +63,11 @@ explore: new_profile {
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${new_profile.normalized_country_code} ;;
   }
+  always_filter: {
+    filters: [
+      new_profile.date: "28 day"
+    ]
+  }
 }
 
 explore: session {
@@ -77,6 +87,11 @@ explore: session {
       (${session.standardized_country_name} NOT IN ("USA", "Germany", "United Kingdom", "France", "Canada", "Mexico", "China", "Brazil") AND ${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" )) AND
     DATE(${session.date_date}) <= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_end session.date %})) AND
     DATE(${session.date_date}) >= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_start session.date %}));;
+  }
+  always_filter: {
+    filters: [
+      session.date: "28 day"
+    ]
   }
 }
 
@@ -99,5 +114,10 @@ explore: activation {
     type: cross
     relationship: many_to_one
     sql_where: ${country_buckets.code} = ${activation.normalized_country_code} ;;
+  }
+  always_filter: {
+    filters: [
+      activation.date: "28 day"
+    ]
   }
 }
