@@ -71,7 +71,9 @@ explore: new_profile {
 }
 
 explore: session {
-  sql_always_where: ${operating_system} = "Windows" and ${browser} != "Mozilla" ;;
+  sql_always_where: ${operating_system} = "Windows" and ${browser} != "Mozilla" AND
+    DATE(${session.date_date}) <= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_end session.date %})) AND
+    DATE(${session.date_date}) >= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_start session.date %}));;
   join: country_buckets {
     type: cross
     relationship: many_to_one
@@ -84,9 +86,7 @@ explore: session {
       (${country_buckets.code} = "BR" AND ${session.standardized_country_name} = "Brazil") OR
       (${country_buckets.code} = "MX" AND ${session.standardized_country_name} = "Mexico") OR
       (${country_buckets.code} = "CN" AND ${session.standardized_country_name} = "China") OR
-      (${session.standardized_country_name} NOT IN ("USA", "Germany", "United Kingdom", "France", "Canada", "Mexico", "China", "Brazil") AND ${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" )) AND
-    DATE(${session.date_date}) <= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_end session.date %})) AND
-    DATE(${session.date_date}) >= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_start session.date %}));;
+      (${session.standardized_country_name} NOT IN ("USA", "Germany", "United Kingdom", "France", "Canada", "Mexico", "China", "Brazil") AND ${country_buckets.bucket} IN ("non-tier-1", "Overall") AND ${country_buckets.code} = "OTHER" ));;
   }
   always_filter: {
     filters: [
