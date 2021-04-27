@@ -21,7 +21,7 @@ view: install {
   }
 
   parameter: date_shift {
-    label: "Shift n days"
+    label: "Shift N days"
     type: number
     description: "Shift dates by n days. This parameter allows to adjust the date range, for example, activations are always 7 days behind."
     default_value: "0"
