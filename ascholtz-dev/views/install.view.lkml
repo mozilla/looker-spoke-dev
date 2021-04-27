@@ -78,7 +78,7 @@ view: install {
   dimension: join_date {
     description: "Date used for joining installs from different time periods."
     type: date
-    sql: IF({% parameter previous_time_period %}, DATE(DATE_SUB(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) - 1 DAY)), ${submission_timestamp_date}) ;;
+    sql: IF({% parameter previous_time_period %}, DATE(DATE_SUB(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) DAY)), ${submission_timestamp_date}) ;;
   }
 
   measure: new_installs {
