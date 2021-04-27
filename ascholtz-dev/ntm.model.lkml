@@ -56,8 +56,8 @@ explore: new_profile {
     ${distribution_id} IS NULL AND
     ${attribution_ua} != "firefox" AND
     ${startup_profile_selection_reason} = "firstrun-created-default" AND
-    DATE(${submission_timestamp_date}) <= IF({% parameter new_profile.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end new_profile.date %}), INTERVAL DATE_DIFF(DATE({% date_start new_profile.date %}), DATE({% date_end new_profile.date %}), DAY) DAY)), DATE({% date_end new_profile.date %})) AND
-    DATE(${submission_timestamp_date}) >= IF({% parameter new_profile.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start new_profile.date %}), INTERVAL DATE_DIFF(DATE({% date_start new_profile.date %}), DATE({% date_end new_profile.date %}), DAY) DAY)), DATE({% date_start new_profile.date %}));;
+    DATE(${submission_timestamp_date}) <= DATE_SUB(IF({% parameter new_profile.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end new_profile.date %}), INTERVAL DATE_DIFF(DATE({% date_start new_profile.date %}), DATE({% date_end new_profile.date %}), DAY) DAY)), DATE({% date_end new_profile.date %})), INTERVAL {% parameter new_profile.date_shift %} DAY) AND
+    DATE(${submission_timestamp_date}) >= DATE_SUB(IF({% parameter new_profile.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start new_profile.date %}), INTERVAL DATE_DIFF(DATE({% date_start new_profile.date %}), DATE({% date_end new_profile.date %}), DAY) DAY)), DATE({% date_start new_profile.date %})), INTERVAL {% parameter new_profile.date_shift %} DAY);;
   join: country_buckets {
     type: cross
     relationship: many_to_one
@@ -72,8 +72,8 @@ explore: new_profile {
 
 explore: session {
   sql_always_where: ${operating_system} = "Windows" and ${browser} != "Mozilla" AND
-    DATE(${session.date_date}) <= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_end session.date %})) AND
-    DATE(${session.date_date}) >= IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_start session.date %}));;
+    DATE(${session.date_date}) <= DATE_SUB(IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_end session.date %})), INTERVAL {% parameter session.date_shift %} DAY) AND
+    DATE(${session.date_date}) >= DATE_SUB(IF({% parameter session.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start session.date %}), INTERVAL DATE_DIFF(DATE({% date_start session.date %}), DATE({% date_end session.date %}), DAY) DAY)), DATE({% date_start session.date %})), INTERVAL {% parameter session.date_shift %} DAY);;
   join: country_buckets {
     type: cross
     relationship: many_to_one
@@ -108,8 +108,8 @@ explore: activation {
     ${distribution_id} IS NULL AND
     ${attribution_ua} != "firefox" AND
     ${startup_profile_selection_reason} = "firstrun-created-default" AND
-    DATE(${submission_timestamp_date}) <= IF({% parameter activation.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end activation.date %}), INTERVAL DATE_DIFF(DATE({% date_start activation.date %}), DATE({% date_end activation.date %}), DAY) DAY)), DATE({% date_end activation.date %})) AND
-    DATE(${submission_timestamp_date}) >= IF({% parameter activation.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start activation.date %}), INTERVAL DATE_DIFF(DATE({% date_start activation.date %}), DATE({% date_end activation.date %}), DAY) DAY)), DATE({% date_start activation.date %}));;
+    DATE(${submission_timestamp_date}) <= DATE_SUB(IF({% parameter activation.previous_time_period %}, DATE(DATE_ADD(DATE({% date_end activation.date %}), INTERVAL DATE_DIFF(DATE({% date_start activation.date %}), DATE({% date_end activation.date %}), DAY) DAY)), DATE({% date_end activation.date %})), INTERVAL {% parameter activation.date_shift %} DAY) AND
+    DATE(${submission_timestamp_date}) >= DATE_SUB(IF({% parameter activation.previous_time_period %}, DATE(DATE_ADD(DATE({% date_start activation.date %}), INTERVAL DATE_DIFF(DATE({% date_start activation.date %}), DATE({% date_end activation.date %}), DAY) DAY)), DATE({% date_start activation.date %})), INTERVAL {% parameter activation.date_shift %} DAY);;
   join: country_buckets {
     type: cross
     relationship: many_to_one
@@ -117,7 +117,8 @@ explore: activation {
   }
   always_filter: {
     filters: [
-      activation.date: "28 day"
+      activation.date: "28 day",
+      activation.date_shift: "7"
     ]
   }
 }
