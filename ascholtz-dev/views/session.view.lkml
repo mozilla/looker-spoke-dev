@@ -68,6 +68,13 @@ view: session {
     type: date
   }
 
+  parameter: date_shift {
+    label: "Shift n days"
+    type: number
+    description: "Shift dates by n days. This parameter allows to adjust the date range, for example, activations are always 7 days behind."
+    default_value: "0"
+  }
+
   dimension: join_date {
     description: "Date used for joining installs from different time periods."
     type: date
