@@ -4,8 +4,9 @@ view: activation {
       WITH clients_last_seen AS (
         SELECT client_id, submission_date, days_seen_bits
         FROM `mozdata.telemetry.clients_last_seen`
-        WHERE submission_date >= DATE_ADD(DATE({% date_start submission_timestamp_date %}), INTERVAL 6 DAY) AND
-          submission_date <= DATE_ADD(DATE({% date_end submission_timestamp_date %}), INTERVAL 6 DAY)
+        WHERE
+          submission_date <= DATE_ADD(DATE_SUB(IF({% parameter previous_time_period %}, DATE(DATE_ADD(DATE({% date_end date %}), INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) DAY)), DATE({% date_end date %})), INTERVAL {% parameter date_shift %} DAY), INTERVAL 6 DAY) AND
+          submission_date >= DATE_ADD(DATE_SUB(IF({% parameter previous_time_period %}, DATE(DATE_ADD(DATE({% date_start date %}), INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) DAY)), DATE({% date_start date %})), INTERVAL {% parameter date_shift %} DAY), INTERVAL 6 DAY)
       )
       SELECT
         new_profile.client_id,
@@ -41,6 +42,7 @@ view: activation {
   }
 
   dimension: client_id {
+    hidden: yes
     type: string
     sql:${TABLE}.client_id ;;
   }
@@ -51,31 +53,37 @@ view: activation {
   }
 
   dimension: attribution_source {
+    hidden: yes
     type: string
     sql: ${TABLE}.attribution_source ;;
   }
 
   dimension: distribution_id {
+    hidden: yes
     type: number
     sql: ${TABLE}.distribution_id ;;
   }
 
   dimension: attribution_ua {
+    hidden: yes
     type: string
     sql: ${TABLE}.attribution_ua ;;
   }
 
   dimension: channel {
+    hidden: yes
     type: string
     sql: ${TABLE}.channel ;;
   }
 
   dimension: build_id {
+    hidden: yes
     type: string
     sql: ${TABLE}.build_id ;;
   }
 
   dimension: os {
+    hidden: yes
     type: string
     sql:  ${TABLE}.os ;;
   }
@@ -87,8 +95,32 @@ view: activation {
   }
 
   dimension: activated {
+    hidden: yes
     type: yesno
     sql: ${TABLE}.activated ;;
+  }
+
+  filter: date {
+    type: date
+  }
+
+  parameter: date_shift {
+    label: "Shift N days"
+    type: number
+    description: "Shift dates by n days. This parameter allows to adjust the date range, for example, activations are always 7 days behind."
+    default_value: "8"
+  }
+
+  parameter: previous_time_period {
+    type: yesno
+    description: "Flag to determine whether data from the previous time period should be used. This is to improve filtering."
+    default_value: "no"
+  }
+
+  dimension: join_date {
+    description: "Date used for joining installs from different time periods."
+    type: date
+    sql: IF({% parameter previous_time_period %}, DATE(DATE_SUB(${submission_timestamp_date}, INTERVAL DATE_DIFF(DATE({% date_start date %}), DATE({% date_end date %}), DAY) DAY)), ${submission_timestamp_date}) ;;
   }
 
   measure: activations {

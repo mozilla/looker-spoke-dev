@@ -5,9 +5,8 @@ explore: subscriptions {
     stripe_subscriptions
   ]
 
-  # apple subscriptions
-  from: apple_subscriptions
   view_name: apple_subscriptions
+  # hide all fields, this is only for building all_subscriptions
   fields: [
     ALL_FIELDS*,
     -apple_subscriptions*
@@ -15,6 +14,8 @@ explore: subscriptions {
 
   # stripe subscriptions
   join: stripe_subscriptions {
+    # hide all fields, this is only for building all_subscriptions
+    fields: []
     type: full_outer
     # stripe susbscriptions go in separate rows
     sql_on: FALSE;;
@@ -102,14 +103,14 @@ explore: subscriptions {
 }
 
 view: all_subscriptions {
-  # dimension: id {
-  #   hidden: yes
-  #   primary_key: yes
-  #   sql: COALESCE(
-  #     ${stripe_subscriptions.id},
-  #     CAST(${apple_subscriptions.id} AS STRING)
-  #   );;
-  # }
+  dimension: id {
+    hidden: yes
+    primary_key: yes
+    sql: COALESCE(
+      ${stripe_subscriptions.id},
+      CAST(${apple_subscriptions.id} AS STRING)
+    );;
+  }
   dimension: provider {
     type: string
     sql: ${TABLE}.provider;;
@@ -144,13 +145,6 @@ view: all_subscriptions {
   }
   dimension: cancel_reason {
     type: string
-    # sql: CASE
-    # WHEN ${stripe_subscriptions.id} IS NULL
-    # THEN "Cancelled by IAP"
-    # WHEN ${stripe_subscriptions.cancelled_by_customer}
-    # THEN "Cancelled by Customer"
-    # ELSE "Payment Failed"
-    # END;;
     sql: ${TABLE}.cancel_reason;;
   }
   dimension_group: user_start {
@@ -185,19 +179,6 @@ view: all_subscriptions {
           ${end_raw} AS date,
           "Cancelled" AS type,
           ${cancel_reason} AS granular_type,
-          -1 AS delta
-        ),
-        -- repeat events for displaying net change
-        STRUCT(
-          ${start_raw} AS date,
-          "Net Paid Subscribers" AS type,
-          "Net Paid Subscribers" AS granular_type,
-          1 AS delta
-        ),
-        STRUCT(
-          ${end_raw} AS date,
-          "Net Paid Subscribers" AS type,
-          "Net Paid Subscribers" AS granular_type,
           -1 AS delta
         )
       ];;
@@ -253,12 +234,6 @@ view: all_subscriptions__events {
     type: string
     sql: ${TABLE}.granular_type;;
   }
-
-  # dimension: raw_delta {
-  #   type: string
-  #   hidden: yes
-  #   sql: ${TABLE}.delta;;
-  # }
 
   measure: delta {
     type: sum
