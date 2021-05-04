@@ -5,7 +5,7 @@ connection: "telemetry"
 # views in my folder
 include: "./views/version_uplift.view.lkml"
 include: "./views/surveys.view.lkml"
-include: "./views/feature-usage.view.lkml"
+include: "./views/feature_usage.view.lkml"
 
 #include: "//spoke-default/KPI/kpi.model.lkml"
 # figure out best way to access the KPI stuff...
@@ -20,6 +20,6 @@ explore: surveys {
 }
 
 
-#explore: feature-usage {
-#  from: feature-usage
-#}
+explore: feature_usage {
+  from: feature_usage
+}
