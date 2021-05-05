@@ -6,6 +6,8 @@ connection: "telemetry"
 include: "./views/version_uplift.view.lkml"
 include: "./views/surveys.view.lkml"
 include: "./views/feature_usage.view.lkml"
+include: "./views/gplay_downloads.view.lkml"
+include: "./views/mozorg_ga.view.lkml"
 
 #include: "//spoke-default/KPI/kpi.model.lkml"
 # figure out best way to access the KPI stuff...
@@ -22,4 +24,13 @@ explore: surveys {
 
 explore: feature_usage {
   from: feature_usage
+}
+
+
+explore: gplay_downloads {
+  from: gplay_downloads
+}
+
+explore: mozorg_ga {
+  from: mozorg_ga
 }
