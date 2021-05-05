@@ -50,7 +50,7 @@ view: mozorg_ga {
         FROM
           `moz-fx-data-marketing-prod.ga_derived.www_site_landing_page_metrics_v1`
         WHERE
-          AND date >= '2021-03-23'
+          date >= '2021-03-23'
         GROUP BY 1, 2, 3, 4
          ;;
   }
