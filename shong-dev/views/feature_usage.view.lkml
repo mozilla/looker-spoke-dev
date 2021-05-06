@@ -36,9 +36,9 @@ view: feature_usage {
        END AS country,
           count(*) as cc,
           sum(CASE WHEN scalar_parent_os_environment_is_taskbar_pinned = true THEN 1 ELSE 0 END) as browser_pinned,
-          count(*) - sum(CASE WHEN scalar_parent_os_environment_is_taskbar_pinned = true THEN 1 ELSE 0 END) as not_browser_pinned,
+          count(*) - sum(CASE WHEN scalar_parent_os_environment_is_taskbar_pinned = true THEN 1 ELSE 0 END) as browser_not_pinned,
           sum(CASE WHEN is_default_browser = true THEN 1 ELSE 0 END) as browser_default,
-          count(*) - sum(CASE WHEN is_default_browser = true THEN 1 ELSE 0 END) as browser_default as not_browser_default
+          count(*) - sum(CASE WHEN is_default_browser = true THEN 1 ELSE 0 END) as browser_not_default
         FROM
           `moz-fx-data-shared-prod.telemetry.clients_daily`
         WHERE
@@ -86,15 +86,15 @@ view: feature_usage {
     drill_fields: [detail*]
   }
 
-  measure: not_browser_pinned {
+  measure: browser_not_pinned {
     type:sum
-    sql: ${TABLE}.not_browser_pinned;;
+    sql: ${TABLE}.browser_not_pinned;;
     drill_fields: [detail*]
   }
 
-  measure: not_browser_default {
+  measure: browser_not_default {
     type:sum
-    sql: ${TABLE}.not_browser_default;;
+    sql: ${TABLE}.browser_not_default;;
     drill_fields: [detail*]
   }
 
