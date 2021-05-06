@@ -32,9 +32,11 @@ explore: gplay_downloads {
   from: gplay_downloads
 }
 
+
 explore: mozorg_ga {
   from: mozorg_ga
 }
+
 
 explore: mozblogs_ga {
   from: mozblogs_ga
