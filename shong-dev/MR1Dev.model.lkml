@@ -9,6 +9,7 @@ include: "./views/feature_usage.view.lkml"
 include: "./views/gplay_downloads.view.lkml"
 include: "./views/mozorg_ga.view.lkml"
 include: "./views/mozblogs_ga.view.lkml"
+include: "./views/forecasts_various.view.lkml"
 
 #include: "//spoke-default/KPI/kpi.model.lkml"
 # figure out best way to access the KPI stuff...
@@ -40,4 +41,14 @@ explore: mozorg_ga {
 
 explore: mozblogs_ga {
   from: mozblogs_ga
+}
+
+
+explore: forecast_desktopDAU {
+  from: forecast_desktopDAU
+}
+
+
+explore: forecast_desktopNP {
+  from: forecast_desktopNP
 }
