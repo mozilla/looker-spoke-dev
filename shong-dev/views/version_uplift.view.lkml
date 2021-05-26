@@ -1,54 +1,39 @@
 view: version_uplift {
   derived_table: {
-    sql: SELECT submission_date,
+    sql:
+SELECT
+    a.*,
+    COALESCE(b.name, 'Unknown') as country_name
+FROM
+    (SELECT submission_date,
        CASE
-           WHEN os IN ('Darwin',
-                       'Linux') THEN os
-           WHEN os = 'Windows_NT'
-                AND os_version = '10.0' THEN 'Windows 10'
-           WHEN os = 'Windows_NT'
-                AND os_version != '10.0' THEN 'Windows Older'
-           ELSE 'other'
-       END AS os_type,
-       CASE
-           WHEN country IN ('AR',
-                            'PH',
-                            'TR',
-                            'CO',
-                            'US',
-                            'DE',
-                            'FR',
-                            'CN',
-                            'PL',
-                            'IN',
-                            'RU',
-                            'BR',
-                            'IT',
-                            'ID',
-                            'GB',
-                            'ES',
-                            'JP',
-                            'CA',
-                            'VN',
-                            'MX') THEN country
-           ELSE 'ROW'
-       END AS country,
+           WHEN os = 'Darwin' THEN 'Mac'
+           WHEN os = 'Linux' THEN 'Linux'
+           WHEN os = 'Windows_NT' THEN 'Windows'
+           ELSE 'Other'
+       END AS desktop_OS,
+       country,
+       date('2021-06-01') as release_date,
        count(DISTINCT client_id) AS cc,
        count(DISTINCT CASE
-                          WHEN substr(app_version, 1, 2) >= '87' THEN client_id
+                          WHEN substr(app_version, 1, 2) >= '89' THEN client_id
                           ELSE NULL
-                      END) AS cc_latest,
+                      END) AS Updated,
        count(DISTINCT CASE
-                          WHEN NOT substr(app_version, 1, 2) >= '87' THEN client_id
+                          WHEN NOT substr(app_version, 1, 2) >= '89' THEN client_id
                           ELSE NULL
-                      END) AS cc_older
-FROM telemetry.clients_daily
-WHERE submission_date >= '2021-03-23' -- change this to real release date
+                      END) AS Non_updated
+FROM `moz-fx-data-shared-prod.telemetry.clients_daily`
+WHERE submission_date >= '2021-05-20' -- change this to real release date
 
   AND normalized_channel = 'release'
 GROUP BY 1,
          2,
-         3
+         3,
+         4) a
+LEFT JOIN
+    (SELECT * FROM `mozdata.static.country_names_v1`) b
+ON (a.country = b.code)
        ;;
   }
 
@@ -61,9 +46,9 @@ GROUP BY 1,
     sql: ${TABLE}.submission_date ;;
   }
 
-  dimension: os_type {
+  dimension: desktop_OS {
     type: string
-    sql: ${TABLE}.os_type ;;
+    sql: ${TABLE}.desktop_OS ;;
   }
 
   dimension: country {
@@ -71,39 +56,42 @@ GROUP BY 1,
     sql: ${TABLE}.country ;;
   }
 
+  dimension: country_name {
+    type: string
+    sql: ${TABLE}.country_name ;;
+  }
+
+  dimension: release_date {
+    type: date
+    datatype: date
+    sql: ${TABLE}.release_date ;;
+  }
+
 ######################################################
 
   measure: cc {
     type:sum
     sql: ${TABLE}.cc;;
-    drill_fields: [detail*]
   }
 
-  measure: cc_latest {
+  measure: Updated {
     type: sum
-    sql: ${TABLE}.cc_latest;;
-    drill_fields: [detail*]
+    sql: ${TABLE}.Updated;;
   }
 
-  measure: cc_older {
+  measure: Non_updated {
     type: sum
-    sql: ${TABLE}.cc_older;;
-    drill_fields: [detail*]
+    sql: ${TABLE}.Non_updated;;
   }
 
   measure: uplift {
     type: number
-    sql: ${cc_latest} / ${cc} * 100;;
-    drill_fields: [detail*]
+    sql: ${Updated} / ${cc} * 100;;
   }
 
 
 ######################################################
 
-
-  set: detail {
-    fields: [submission_date, os_type, country]
-  }
 }
 
 
