@@ -105,3 +105,112 @@ GROUP BY 1,
     fields: [submission_date, os_type, country]
   }
 }
+
+
+
+
+view: version_uplift_mobile {
+  derived_table: {
+    sql:WITH android AS
+  (SELECT submission_date,
+          country,
+          os,
+          canonical_name,
+          count(DISTINCT client_id) AS cc,
+          count(DISTINCT CASE
+                             WHEN SUBSTR(app_version, 1, 2) >= '88' THEN client_id
+                             ELSE NULL
+                         END) AS cc_latest,
+          count(DISTINCT CASE
+                             WHEN NOT SUBSTR(app_version, 1, 2) >= '88' THEN client_id
+                             ELSE NULL
+                         END) AS cc_older
+   FROM telemetry.nondesktop_clients_last_seen
+   WHERE submission_date >= '2021-03-23'
+     AND days_since_seen = 0
+     AND canonical_name IN ('Firefox for Android (Fennec)',
+                            'Firefox for Android (Fenix)')
+     AND normalized_channel = 'release'
+   GROUP BY 1,
+            2,
+            3,
+            4),
+     IOS AS
+  (SELECT submission_date,
+          country,
+          os,
+          canonical_name,
+          count(DISTINCT client_id) AS cc,
+          count(DISTINCT CASE
+                             WHEN SUBSTR(app_version, 1, 2) >= '33' THEN client_id
+                             ELSE NULL
+                         END) AS cc_latest,
+          count(DISTINCT CASE
+                             WHEN NOT SUBSTR(app_version, 1, 2) >= '33' THEN client_id
+                             ELSE NULL
+                         END) AS cc_older
+   FROM telemetry.nondesktop_clients_last_seen
+   WHERE submission_date >= '2021-03-23'
+     AND days_since_seen = 0
+     AND canonical_name IN ('Firefox for iOS')
+     AND normalized_channel = 'release'
+   GROUP BY 1,
+            2,
+            3,
+            4)
+SELECT *
+FROM
+  (SELECT *
+   FROM android)
+UNION ALL
+  (SELECT *
+   FROM IOS)
+       ;;
+  }
+
+
+######################################################
+
+  dimension: submission_date {
+    type: date
+    datatype: date
+    sql: ${TABLE}.submission_date ;;
+  }
+
+  dimension: os {
+    type: string
+    sql: ${TABLE}.os ;;
+  }
+
+  dimension: country {
+    type: string
+    sql: ${TABLE}.country ;;
+  }
+
+  dimension: canonical_name {
+    type: string
+    sql: ${TABLE}.canonical_name ;;
+  }
+
+######################################################
+
+  measure: cc {
+    type:sum
+    sql: ${TABLE}.cc;;
+  }
+
+  measure: cc_latest {
+    type: sum
+    sql: ${TABLE}.cc_latest;;
+  }
+
+  measure: cc_older {
+    type: sum
+    sql: ${TABLE}.cc_older;;
+  }
+
+  measure: uplift {
+    type: number
+    sql: ${cc_latest} / ${cc} * 100;;
+  }
+}

@@ -19,6 +19,11 @@ explore: version_uplift {
 }
 
 
+explore: version_uplift_mobile {
+  from: version_uplift_mobile
+}
+
+
 explore: surveys {
   from: surveys
 }
