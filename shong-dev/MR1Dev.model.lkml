@@ -10,6 +10,7 @@ include: "./views/gplay_downloads.view.lkml"
 include: "./views/mozorg_ga.view.lkml"
 include: "./views/mozblogs_ga.view.lkml"
 include: "./views/forecasts_various.view.lkml"
+include: "./views/dau_newprofile.view.lkml"
 
 #include: "//spoke-default/KPI/kpi.model.lkml"
 # figure out best way to access the KPI stuff...
@@ -56,4 +57,8 @@ explore: forecast_desktopDAU {
 
 explore: forecast_desktopNP {
   from: forecast_desktopNP
+}
+
+explore: dau_desktop {
+  from: dau_desktop
 }

@@ -1,39 +1,53 @@
 view: version_uplift {
   derived_table: {
     sql:
-SELECT
-    a.*,
-    COALESCE(b.name, 'Unknown') as country_name
-FROM
-    (SELECT submission_date,
-       CASE
+    SELECT submission_date,
+          CASE
            WHEN os = 'Darwin' THEN 'Mac'
            WHEN os = 'Linux' THEN 'Linux'
            WHEN os = 'Windows_NT' THEN 'Windows'
            ELSE 'Other'
-       END AS desktop_OS,
-       country,
+       END AS Desktop_OS,
+       CASE
+           WHEN country IN ('AR',
+                            'PH',
+                            'TR',
+                            'CO',
+                            'US',
+                            'DE',
+                            'FR',
+                            'CN',
+                            'PL',
+                            'IN',
+                            'RU',
+                            'BR',
+                            'IT',
+                            'ID',
+                            'GB',
+                            'ES',
+                            'JP',
+                            'CA',
+                            'VN',
+                            'MX') THEN country
+           ELSE 'ROW'
+       END AS country,
        date('2021-06-01') as release_date,
        count(DISTINCT client_id) AS cc,
        count(DISTINCT CASE
-                          WHEN substr(app_version, 1, 2) >= '89' THEN client_id
+                          WHEN substr(app_version, 1, 2) >= '88' THEN client_id
                           ELSE NULL
                       END) AS Updated,
        count(DISTINCT CASE
-                          WHEN NOT substr(app_version, 1, 2) >= '89' THEN client_id
+                          WHEN NOT substr(app_version, 1, 2) >= '88' THEN client_id
                           ELSE NULL
                       END) AS Non_updated
 FROM `moz-fx-data-shared-prod.telemetry.clients_daily`
-WHERE submission_date >= '2021-05-20' -- change this to real release date
+WHERE submission_date >= '2021-05-18' -- change this to real release date
 
   AND normalized_channel = 'release'
 GROUP BY 1,
          2,
-         3,
-         4) a
-LEFT JOIN
-    (SELECT * FROM `mozdata.static.country_names_v1`) b
-ON (a.country = b.code)
+         3
        ;;
   }
 
@@ -54,11 +68,6 @@ ON (a.country = b.code)
   dimension: country {
     type: string
     sql: ${TABLE}.country ;;
-  }
-
-  dimension: country_name {
-    type: string
-    sql: ${TABLE}.country_name ;;
   }
 
   dimension: release_date {
@@ -101,51 +110,91 @@ view: version_uplift_mobile {
   derived_table: {
     sql:WITH android AS
   (SELECT submission_date,
-          country,
-          os,
+          CASE
+           WHEN country IN ('AR',
+                            'PH',
+                            'TR',
+                            'CO',
+                            'US',
+                            'DE',
+                            'FR',
+                            'CN',
+                            'PL',
+                            'IN',
+                            'RU',
+                            'BR',
+                            'IT',
+                            'ID',
+                            'GB',
+                            'ES',
+                            'JP',
+                            'CA',
+                            'VN',
+                            'MX') THEN country
+           ELSE 'ROW'
+       END AS country,
           canonical_name,
           count(DISTINCT client_id) AS cc,
           count(DISTINCT CASE
                              WHEN SUBSTR(app_version, 1, 2) >= '88' THEN client_id
                              ELSE NULL
-                         END) AS cc_latest,
+                         END) AS Updated,
           count(DISTINCT CASE
                              WHEN NOT SUBSTR(app_version, 1, 2) >= '88' THEN client_id
                              ELSE NULL
-                         END) AS cc_older
+                         END) AS Non_updated
    FROM telemetry.nondesktop_clients_last_seen
-   WHERE submission_date >= '2021-03-23'
+   WHERE submission_date >= '2021-05-18'
      AND days_since_seen = 0
      AND canonical_name IN ('Firefox for Android (Fennec)',
                             'Firefox for Android (Fenix)')
      AND normalized_channel = 'release'
    GROUP BY 1,
             2,
-            3,
-            4),
+            3),
      IOS AS
   (SELECT submission_date,
-          country,
-          os,
+          CASE
+           WHEN country IN ('AR',
+                            'PH',
+                            'TR',
+                            'CO',
+                            'US',
+                            'DE',
+                            'FR',
+                            'CN',
+                            'PL',
+                            'IN',
+                            'RU',
+                            'BR',
+                            'IT',
+                            'ID',
+                            'GB',
+                            'ES',
+                            'JP',
+                            'CA',
+                            'VN',
+                            'MX') THEN country
+           ELSE 'ROW'
+       END AS country,
           canonical_name,
           count(DISTINCT client_id) AS cc,
           count(DISTINCT CASE
                              WHEN SUBSTR(app_version, 1, 2) >= '33' THEN client_id
                              ELSE NULL
-                         END) AS cc_latest,
+                         END) AS Updated,
           count(DISTINCT CASE
                              WHEN NOT SUBSTR(app_version, 1, 2) >= '33' THEN client_id
                              ELSE NULL
-                         END) AS cc_older
+                         END) AS Non_updated
    FROM telemetry.nondesktop_clients_last_seen
-   WHERE submission_date >= '2021-03-23'
+   WHERE submission_date >= '2021-05-18'
      AND days_since_seen = 0
      AND canonical_name IN ('Firefox for iOS')
      AND normalized_channel = 'release'
    GROUP BY 1,
             2,
-            3,
-            4)
+            3)
 SELECT *
 FROM
   (SELECT *
@@ -165,11 +214,6 @@ UNION ALL
     sql: ${TABLE}.submission_date ;;
   }
 
-  dimension: os {
-    type: string
-    sql: ${TABLE}.os ;;
-  }
-
   dimension: country {
     type: string
     sql: ${TABLE}.country ;;
@@ -187,18 +231,18 @@ UNION ALL
     sql: ${TABLE}.cc;;
   }
 
-  measure: cc_latest {
+  measure: Updated {
     type: sum
-    sql: ${TABLE}.cc_latest;;
+    sql: ${TABLE}.Updated;;
   }
 
-  measure: cc_older {
+  measure: Non_updated {
     type: sum
-    sql: ${TABLE}.cc_older;;
+    sql: ${TABLE}.Non_updated;;
   }
 
   measure: uplift {
     type: number
-    sql: ${cc_latest} / ${cc} * 100;;
+    sql: ${Updated} / ${cc} * 100;;
   }
 }

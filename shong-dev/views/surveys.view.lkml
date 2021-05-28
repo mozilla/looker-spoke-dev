@@ -6,7 +6,7 @@
         FROM
           `moz-fx-data-shared-prod.telemetry.heartbeat`
         WHERE
-          date(submission_timestamp) >= '2021-05-20' -- change this to real release date
+          date(submission_timestamp) >= '2021-05-18' -- change this to real release date
           and SPLIT(payload.survey_id, '::')[OFFSET(0)] like '%visual_perception_89%'
           and normalized_channel = 'release'
          ;;

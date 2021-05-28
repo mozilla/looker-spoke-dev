@@ -2,7 +2,8 @@ view: forecast_desktopDAU {
   derived_table: {
     sql: SELECT
       a.*,
-      b.* EXCEPT (date),
+      b.yhat_upper as upper_bound,
+      b.yhat_lower as lower_bound,
       CASE when a.dau > b.yhat_upper THEN 'above trend'
            when a.dau < b.yhat_lower THEN 'below trend'
            when a.dau BETWEEN b.yhat_lower AND b.yhat_upper THEN 'within trend'
@@ -24,11 +25,11 @@ view: forecast_desktopDAU {
     LEFT JOIN
 
     (SELECT
-          date,
+          date(ds) as date,
           yhat_lower,
           yhat_upper
         FROM
-          `mozdata.analysis.loines_desktop_dau_forecast_2021-05-13`) b
+          `mozdata.analysis.loines_mr1_desktop_dau_forecast`) b
 
     ON (a.submission_date = b.date)
          ;;
@@ -52,19 +53,16 @@ view: forecast_desktopDAU {
   measure: dau {
     type:sum
     sql: ${TABLE}.dau;;
-    drill_fields: [detail*]
   }
 
-  measure: yhat_lower {
+  measure: lower_bound {
     type:sum
-    sql: ${TABLE}.yhat_lower;;
-    drill_fields: [detail*]
+    sql: ${TABLE}.lower_bound;;
   }
 
-  measure: yhat_upper {
+  measure: upper_bound {
     type:sum
-    sql: ${TABLE}.yhat_upper;;
-    drill_fields: [detail*]
+    sql: ${TABLE}.upper_bound;;
   }
 
 
@@ -73,7 +71,6 @@ view: forecast_desktopDAU {
     sql: ${TABLE}.lower_diff_pct;;
     value_format: "#.00"
     precision: 2
-    drill_fields: [detail*]
   }
 
   measure: upper_diff_pct {
@@ -81,17 +78,9 @@ view: forecast_desktopDAU {
   sql: ${TABLE}.upper_diff_pct;;
     value_format: "#.00"
     precision: 2
-  drill_fields: [detail*]
 }
 
-
-######################################################
-
-  set: detail {
-    fields: [submission_date]
-  }
 }
-
 
 ######################################################
 ######################################################
