@@ -34,11 +34,11 @@ view: version_uplift {
        date('2021-06-01') as release_date,
        count(DISTINCT client_id) AS cc,
        count(DISTINCT CASE
-                          WHEN substr(app_version, 1, 2) >= '88' THEN client_id
+                          WHEN substr(app_version, 1, 2) >= '89' THEN client_id
                           ELSE NULL
                       END) AS Updated,
        count(DISTINCT CASE
-                          WHEN NOT substr(app_version, 1, 2) >= '88' THEN client_id
+                          WHEN NOT substr(app_version, 1, 2) >= '89' THEN client_id
                           ELSE NULL
                       END) AS Non_updated
 FROM `moz-fx-data-shared-prod.telemetry.clients_daily`
@@ -136,11 +136,11 @@ view: version_uplift_mobile {
           canonical_name,
           count(DISTINCT client_id) AS cc,
           count(DISTINCT CASE
-                             WHEN SUBSTR(app_version, 1, 2) >= '88' THEN client_id
+                             WHEN SUBSTR(app_version, 1, 2) >= '89' THEN client_id
                              ELSE NULL
                          END) AS Updated,
           count(DISTINCT CASE
-                             WHEN NOT SUBSTR(app_version, 1, 2) >= '88' THEN client_id
+                             WHEN NOT SUBSTR(app_version, 1, 2) >= '89' THEN client_id
                              ELSE NULL
                          END) AS Non_updated
    FROM telemetry.nondesktop_clients_last_seen
@@ -180,11 +180,11 @@ view: version_uplift_mobile {
           canonical_name,
           count(DISTINCT client_id) AS cc,
           count(DISTINCT CASE
-                             WHEN SUBSTR(app_version, 1, 2) >= '33' THEN client_id
+                             WHEN SUBSTR(app_version, 1, 2) >= '34' THEN client_id
                              ELSE NULL
                          END) AS Updated,
           count(DISTINCT CASE
-                             WHEN NOT SUBSTR(app_version, 1, 2) >= '33' THEN client_id
+                             WHEN NOT SUBSTR(app_version, 1, 2) >= '34' THEN client_id
                              ELSE NULL
                          END) AS Non_updated
    FROM telemetry.nondesktop_clients_last_seen
