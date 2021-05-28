@@ -62,3 +62,35 @@ explore: forecast_desktopNP {
 explore: dau_desktop {
   from: dau_desktop
 }
+
+explore: forecast_dls {
+  from: forecast_dls
+}
+
+explore: dau_mobile {
+  from: dau_mobile
+}
+
+
+explore: forecast_mobile_dau {
+  from: forecast_mobile_dau
+}
+
+
+explore: install_android {
+  from: install_android
+}
+
+
+explore: forecast_android_installs {
+  from: forecast_android_installs
+}
+
+explore: install_ios {
+  from: install_ios
+}
+
+
+explore: forecast_ios_installs {
+  from: forecast_ios_installs
+}
