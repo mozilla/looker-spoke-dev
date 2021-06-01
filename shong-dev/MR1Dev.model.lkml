@@ -11,6 +11,7 @@ include: "./views/mozorg_ga.view.lkml"
 include: "./views/mozblogs_ga.view.lkml"
 include: "./views/forecasts_various.view.lkml"
 include: "./views/dau_newprofile.view.lkml"
+include: "./views/feature_usage_mobile.view.lkml"
 
 #include: "//spoke-default/KPI/kpi.model.lkml"
 # figure out best way to access the KPI stuff...
@@ -93,4 +94,30 @@ explore: install_ios {
 
 explore: forecast_ios_installs {
   from: forecast_ios_installs
+}
+
+
+explore: feature_usage_themes {
+  from: feature_usage_themes
+}
+
+
+explore: tabtray_android {
+  from: tabtray_android
+}
+
+explore: tabtray_ios {
+  from: tabtray_ios
+}
+
+explore: tabs_overall_ios {
+  from: tabs_overall_ios
+}
+
+explore: synced_tabs_ios {
+  from: synced_tabs_ios
+}
+
+explore: search_mobile {
+  from: search_mobile
 }
