@@ -6,6 +6,7 @@ include: "*.view.lkml"                # include all views in the views/ folder i
 
 explore: baseline {}
 explore: client_ltv {}
+explore: slack_metrics {}
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.
 #
