@@ -4,7 +4,7 @@ view: fission_with_dimensions {
       SELECT *
       FROM `moz-fx-data-shared-prod.operational_monitoring.bug_1660366_pref_ongoing_fission_nightly_experiment_nightly_83_100`
       CROSS JOIN UNNEST(metrics)
-      WHERE PARSE_DATE('%Y%m%d', CAST(build_id AS STRING)) > "2021-01-01"
+      WHERE PARSE_DATE('%Y%m%d', CAST(build_id AS STRING)) > "2021-07-01"
       ;;
   }
 
@@ -37,6 +37,12 @@ view: fission_with_dimensions {
     sql: ${TABLE}.name ;;
   }
 
+  parameter: percentile_conf {
+    label: "Percentile"
+    type: number
+    default_value: "50.0"
+  }
+
   measure: median {
     type: number
     sql:
@@ -48,5 +54,47 @@ view: fission_with_dimensions {
           ),
           [0.5]
         )[SAFE_OFFSET(0)].value ;;
+  }
+
+  measure: percentile {
+    type: number
+    sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
+      {% parameter percentile_conf %},
+      STRUCT(
+        mozfun.hist.merge(
+          ARRAY_AGG(
+            ${TABLE}.histograms IGNORE NULLS
+          )
+        ).values AS values
+      )
+    ).percentile ;;
+  }
+
+  measure: percentile_low {
+    type: number
+    sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
+      {% parameter percentile_conf %},
+      STRUCT(
+        mozfun.hist.merge(
+          ARRAY_AGG(
+            ${TABLE}.histograms IGNORE NULLS
+          )
+        ).values AS values
+      )
+    ).low ;;
+  }
+
+  measure: percentile_high {
+    type: number
+    sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
+      {% parameter percentile_conf %},
+      STRUCT(
+        mozfun.hist.merge(
+          ARRAY_AGG(
+            ${TABLE}.histograms IGNORE NULLS
+          )
+        ).values AS values
+      )
+    ).high ;;
   }
 }
