@@ -1,5 +1,3 @@
-
-
 view: fission_with_dimensions {
   derived_table: {
     sql:
