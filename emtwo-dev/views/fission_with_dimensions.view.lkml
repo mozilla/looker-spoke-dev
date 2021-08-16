@@ -1,6 +1,13 @@
 
 
 view: fission_with_dimensions {
+  derived_table: {
+    sql:
+      SELECT *
+      FROM `moz-fx-data-shared-prod.operational_monitoring.bug_1660366_pref_ongoing_fission_nightly_experiment_nightly_83_100`
+      ;;
+  }
+
   dimension: build_id {
     type: date
     sql:
