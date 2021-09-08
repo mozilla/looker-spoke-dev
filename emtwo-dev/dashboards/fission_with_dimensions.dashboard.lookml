@@ -2,287 +2,508 @@
   title: Fission with Dimensions
   layout: newspaper
   preferred_viewer: dashboards-next
+
   elements:
-  - title: Content Process Max
-    name: Content Process Max
-    model: fission
-    explore: dimensions
-    type: looker_line
-    fields: [dimensions.median, dimensions.build_id, dimensions.branch]
-    pivots: [dimensions.branch]
-    filters:
-      dimensions.probe: CONTENT_PROCESS_MAX
-    layout: grid
-    listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
-    row: 19
-    col: 0
-    width: 12
-    height: 8
-  - title: Content Process Count
-    name: Content Process Count
-    model: fission
-    explore: dimensions
-    type: looker_line
-    fields: [dimensions.median, dimensions.build_id, dimensions.branch]
-    pivots: [dimensions.branch]
-    filters:
-      dimensions.probe: CONTENT_PROCESS_COUNT
-    layout: grid
-    listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
-    row: 19
-    col: 12
-    width: 12
-    height: 8
-  - title: Checkerboard Severity
-    name: Checkerboard Severity
-    model: fission
-    explore: dimensions
-    type: looker_line
-    fields: [dimensions.median, dimensions.build_id, dimensions.branch]
-    pivots: [dimensions.branch]
-    filters:
-      dimensions.probe: CHECKERBOARD_SEVERITY
-    layout: grid
-    listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
-    row: 27
-    col: 0
-    width: 12
-    height: 8
   - title: Child Process Launch MS
     name: Child Process Launch MS
     model: fission
-    explore: dimensions
+    explore: histograms
     type: looker_line
-    fields: [dimensions.median, dimensions.build_id, dimensions.branch]
-    pivots: [dimensions.branch]
+    fields: [histograms.build_id, histograms.branch, histograms.percentile_high, histograms.percentile_low,
+      histograms.percentile]
+    pivots: [histograms.branch]
     filters:
-      dimensions.probe: CHILD_PROCESS_LAUNCH_MS
-    layout: grid
+      histograms.probe: CHILD_PROCESS_LAUNCH_MS
+      histograms.branch: fission-enabled,fission-disabled
     listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
-    row: 27
-    col: 12
-    width: 12
-    height: 8
-  - title: Child Process Launch MS
-    name: Child Process Launch MS (2)
-    model: fission
-    explore: dimensions
-    type: looker_line
-    fields: [dimensions.build_id, dimensions.branch, dimensions.percentile_high, dimensions.percentile_low,
-      dimensions.percentile]
-    pivots: [dimensions.branch]
-    filters:
-      dimensions.probe: CHILD_PROCESS_LAUNCH_MS
-      dimensions.os: Windows
-      dimensions.cores_count: '4'
-      dimensions.branch: fission-enabled,fission-disabled
-    sorts: [dimensions.build_id desc, dimensions.branch]
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    show_null_points: true
-    interpolation: linear
-    series_colors:
-      fission-disabled - dimensions.percentile: "#1A73E8"
-      fission-enabled - dimensions.percentile: "#E8710A"
-      fission-enabled - dimensions.percentile_high: "#fac014"
-      fission-disabled - dimensions.percentile_high: "#12B5CB"
-    layout: grid
-    defaults_version: 1
-    listen:
-      Percentile: dimensions.percentile_conf
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
     row: 2
     col: 12
     width: 12
     height: 8
+
   - title: Content Process Max
-    name: Content Process Max (2)
+    name: Content Process Max
     model: fission
-    explore: dimensions
+    explore: histograms
     type: looker_line
-    fields: [dimensions.build_id, dimensions.branch, dimensions.percentile, dimensions.percentile_high,
-      dimensions.percentile_low]
-    pivots: [dimensions.branch]
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
     filters:
-      dimensions.probe: CONTENT_PROCESS_MAX
-      dimensions.branch: fission-enabled,fission-disabled
-    sorts: [dimensions.build_id desc, dimensions.branch]
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    show_null_points: true
-    interpolation: linear
-    series_colors:
-      fission-disabled - dimensions.percentile: "#1A73E8"
-      fission-disabled - dimensions.percentile_low: "#12B5CB"
-      fission-enabled - dimensions.percentile_low: "#F9AB00"
-    layout: grid
-    defaults_version: 1
+      histograms.probe: CONTENT_PROCESS_MAX
+      histograms.branch: fission-enabled,fission-disabled
     listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
     row: 2
     col: 0
     width: 12
     height: 8
+
   - title: Checkerboard Severity
-    name: Checkerboard Severity (2)
+    name: Checkerboard Severity
     model: fission
-    explore: dimensions
+    explore: histograms
     type: looker_line
-    fields: [dimensions.build_id, dimensions.branch, dimensions.percentile, dimensions.percentile_high,
-      dimensions.percentile_low]
-    pivots: [dimensions.branch]
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
     filters:
-      dimensions.probe: CHECKERBOARD_SEVERITY
-      dimensions.branch: fission-enabled,fission-disabled
-    sorts: [dimensions.build_id desc, dimensions.branch]
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    show_null_points: true
-    interpolation: linear
-    series_colors:
-      fission-disabled - dimensions.percentile_low: "#12B5CB"
-      fission-enabled - dimensions.percentile_low: "#F9AB00"
-    layout: grid
-    defaults_version: 1
+      histograms.probe: CHECKERBOARD_SEVERITY
+      histograms.branch: fission-enabled,fission-disabled
     listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
     row: 10
     col: 0
     width: 12
     height: 7
+
   - title: Content Process Count
-    name: Content Process Count (2)
+    name: Content Process Count
     model: fission
-    explore: dimensions
+    explore: histograms
     type: looker_line
-    fields: [dimensions.build_id, dimensions.branch, dimensions.percentile, dimensions.percentile_high,
-      dimensions.percentile_low]
-    pivots: [dimensions.branch]
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
     filters:
-      dimensions.probe: CONTENT_PROCESS_COUNT
-      dimensions.branch: fission-enabled,fission-disabled
-    sorts: [dimensions.build_id desc, dimensions.branch]
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_view_names: false
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    show_null_points: true
-    interpolation: linear
-    series_colors:
-      fission-disabled - dimensions.percentile_low: "#12B5CB"
-      fission-enabled - dimensions.percentile_low: "#F9AB00"
-    layout: grid
-    defaults_version: 1
+      histograms.probe: CONTENT_PROCESS_COUNT
+      histograms.branch: fission-enabled,fission-disabled
     listen:
-      OS: dimensions.os
-      Cores: dimensions.cores_count
-      Percentile: dimensions.percentile_conf
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
     row: 10
     col: 12
     width: 12
     height: 7
-  - name: Median
-    type: text
-    title_text: Median
-    subtitle_text: ''
-    body_text: ''
+
+  - title: Content Frame Time VSync
+    name: Content Frame Time VSync
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: CONTENT_FRAME_TIME_VSYNC
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 11
+    col: 0
+    width: 12
+    height: 7
+
+  - title: FX New Window MS
+    name:  FX New Window MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: FX_NEW_WINDOW_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 11
+    col: 12
+    width: 12
+    height: 7
+
+  - title: FX Tab Switch Composite E10S MS
+    name:  FX Tab Switch Composite E10S MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: FX_TAB_SWITCH_COMPOSITE_E10S_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 12
+    col: 0
+    width: 12
+    height: 7
+
+  - title: Keypress Latency MS
+    name:  Keypress Latency MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: KEYPRESS_PRESENT_LATENCY_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 12
+    col: 12
+    width: 12
+    height: 7
+
+  - title: Memory Total
+    name:  Memory Total
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: MEMORY_TOTAL
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 13
+    col: 0
+    width: 12
+    height: 7
+
+  - title: Cycle Collector Max Pause
+    name:  Cycle Collector Max Pause
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: CYCLE_COLLECTOR_MAX_PAUSE
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 13
+    col: 12
+    width: 12
+    height: 7
+
+  - title: Cycle Collector Max Pause Content
+    name:  Cycle Collector Max Pause Content
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: CYCLE_COLLECTOR_MAX_PAUSE_CONTENT
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 14
+    col: 0
+    width: 12
+    height: 7
+
+  - title: GC Max Pause 2
+    name:  GC Max Pause 2
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: GC_MAX_PAUSE_2
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 14
+    col: 12
+    width: 12
+    height: 7
+
+  - title: GC Max Pause 2 Content
+    name:  GC Max Pause 2 Content
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: GC_MAX_PAUSE_2_CONTENT
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 15
+    col: 0
+    width: 12
+    height: 7
+
+  - title: GC MS
+    name:  GC MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: GC_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 15
+    col: 12
+    width: 12
+    height: 7
+
+  - title: GC MS Content
+    name:  GC MS Content
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: GC_MS_CONTENT
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 16
+    col: 0
+    width: 12
+    height: 7
+
+  - title: GC Slice During Idle
+    name:  GC Slice During Idle
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: GC_SLICE_DURING_IDLE
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 16
+    col: 12
+    width: 12
+    height: 7
+
+  - title: FGC Slice During Idle Content
+    name:  GC Slice During Idle Content
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: GC_SLICE_DURING_IDLE_CONTENT
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
     row: 17
     col: 0
-    width: 24
-    height: 2
+    width: 12
+    height: 7
+
+  - title: Memory Unique Content Startup
+    name:  Memory Unique Content Startup
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: MEMORY_UNIQUE_CONTENT_STARTUP
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 17
+    col: 12
+    width: 12
+    height: 7
+
+  - title: Perf First Contentful Paint MS
+    name:  Perf First Contentful Paint MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: PERF_FIRST_CONTENTFUL_PAINT_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 18
+    col: 0
+    width: 12
+    height: 7
+
+  - title: Time to First Interaction MS
+    name:  Time to First Interaction MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: TIME_TO_FIRST_INTERACTION_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 18
+    col: 12
+    width: 12
+    height: 7
+
+  - title: Perf Page Load Time MS
+    name:  Perf Page Load Time MS
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: PERF_PAGE_LOAD_TIME_MS
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 19
+    col: 0
+    width: 12
+    height: 7
+
+  - title: Loaded Tab Count
+    name:  Loaded Tab Count
+    model: fission
+    explore: histograms
+    type: looker_line
+    fields: [histograms.build_id, histograms.branch, histograms.percentile, histograms.percentile_high,
+      histograms.percentile_low]
+    pivots: [histograms.branch]
+    filters:
+      histograms.probe: LOADED_TAB_COUNT
+      histograms.branch: fission-enabled,fission-disabled
+    listen:
+      OS: histograms.os
+      Cores: histograms.cores_count
+      Percentile: histograms.percentile_conf
+    row: 19
+    col: 12
+    width: 12
+    height: 7
+
+  - title: Session Length
+    name: Session Length
+    model: fission
+    explore: scalars
+    type: looker_line
+    fields: [scalars.build_id, scalars.branch, scalars.percentile, scalars.percentile_high,
+      scalars.percentile_low]
+    pivots: [scalars.branch]
+    filters:
+      scalars.probe: SUBSESSION_LENGTH
+      scalars.branch: fission-enabled,fission-disabled
+    listen:
+      OS: scalars.os
+      Cores: scalars.cores_count
+      Percentile: scalars.percentile_conf
+    row: 35
+    col: 12
+    width: 12
+    height: 8
+
+  - title: URI Count
+    name: URI Count
+    model: fission
+    explore: scalars
+    type: looker_line
+    fields: [scalars.build_id, scalars.branch, scalars.percentile, scalars.percentile_high,
+      scalars.percentile_low]
+    pivots: [scalars.branch]
+    filters:
+      scalars.probe: URI_COUNT
+      scalars.branch: fission-enabled,fission-disabled
+    listen:
+      OS: scalars.os
+      Cores: scalars.cores_count
+      Percentile: scalars.percentile_conf
+    row: 35
+    col: 0
+    width: 12
+    height: 8
+
+  - title: Active Hours
+    name: Active Hours
+    model: fission
+    explore: scalars
+    type: looker_line
+    fields: [scalars.build_id, scalars.branch, scalars.percentile, scalars.percentile_high,
+      scalars.percentile_low]
+    pivots: [scalars.branch]
+    filters:
+      scalars.probe: ACTIVE_HOURS
+      scalars.branch: fission-enabled,fission-disabled
+    listen:
+      OS: scalars.os
+      Cores: scalars.cores_count
+      Percentile: scalars.percentile_conf
+    row: 36
+    col: 0
+    width: 12
+    height: 8
+
   - name: Percentiles
     type: text
     title_text: Percentiles
@@ -292,6 +513,7 @@
     col: 0
     width: 24
     height: 2
+
   filters:
   - name: OS
     title: OS
@@ -306,6 +528,7 @@
       - Windows
       - Linux
       - Mac
+
   - name: Cores
     title: Cores
     type: string_filter
@@ -324,11 +547,12 @@
       - '12'
       - '14'
       - '16'
+
   - name: Percentile
     title: Percentile
-    type: field_filter
+    type: number_filter
     default_value: '50'
-    allow_multiple_values: true
+    allow_multiple_values: false
     required: true
     ui_config:
       type: dropdown_menu
@@ -345,7 +569,3 @@
       - '90'
       - '95'
       - '99'
-    model: fission
-    explore: dimensions
-    listens_to_filters: []
-    field: dimensions.percentile_conf

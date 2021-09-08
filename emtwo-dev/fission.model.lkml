@@ -4,20 +4,19 @@ include: "views/*.view.lkml"
 include: "dashboards/*.dashboard"
 
 
-explore: monitoring {
-  from: fission_monitoring
+explore: histograms {
+  from:  fission_histograms
 
   always_filter: {
     filters: [
-      os: "All",
-      branch: "enabled, disabled",
-      probe: "CONTENT_PROCESS_MAX, CONTENT_PROCESS_COUNT"
+      os: "Windows",
+      branch: "fission-enabled, fission-disabled",
     ]
   }
 }
 
-explore: dimensions {
-  from:  fission_with_dimensions
+explore: scalars {
+  from:  fission_scalars
 
   always_filter: {
     filters: [

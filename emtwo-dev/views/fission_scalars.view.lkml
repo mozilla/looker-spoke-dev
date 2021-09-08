@@ -1,8 +1,9 @@
-view: fission_with_dimensions {
+view: fission_scalars {
   derived_table: {
     sql:
       SELECT *
-      FROM `moz-fx-data-shared-prod.operational_monitoring.bug_1660366_pref_ongoing_fission_nightly_experiment_nightly_83_100`
+      FROM `moz-fx-data-shared-prod.operational_monitoring.bug_1660366_pref_ongoing_fission_nightly_experiment_nightly_83_100_scalar`
+      WHERE agg_type = "SUM"
       ;;
   }
 
@@ -41,30 +42,13 @@ view: fission_with_dimensions {
     default_value: "50.0"
   }
 
-  measure: median {
-    type: number
-    sql:
-        mozfun.hist.percentiles(
-          mozfun.hist.merge(
-            ARRAY_AGG(
-              ${TABLE}.histogram IGNORE NULLS
-            )
-          ),
-          [0.5]
-        )[SAFE_OFFSET(0)].value ;;
-  }
-
   measure: percentile {
     type: number
     sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
       {% parameter percentile_conf %},
-      STRUCT(
-        mozfun.hist.merge(
-          ARRAY_AGG(
-            ${TABLE}.histogram IGNORE NULLS
-          )
-        ).values AS values
-      )
+      STRUCT<values ARRAY<STRUCT<key INT64, value FLOAT64>>>(mozfun.map.sum(
+        ARRAY_AGG(STRUCT<key INT64, value FLOAT64>(COALESCE(${TABLE}.value, 0), 1))
+      ))
     ).percentile ;;
   }
 
@@ -72,13 +56,9 @@ view: fission_with_dimensions {
     type: number
     sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
       {% parameter percentile_conf %},
-      STRUCT(
-        mozfun.hist.merge(
-          ARRAY_AGG(
-            ${TABLE}.histogram IGNORE NULLS
-          )
-        ).values AS values
-      )
+      STRUCT<values ARRAY<STRUCT<key INT64, value FLOAT64>>>(mozfun.map.sum(
+        ARRAY_AGG(STRUCT<key INT64, value FLOAT64>(COALESCE(${TABLE}.value, 0), 1))
+      ))
     ).low ;;
   }
 
@@ -86,13 +66,9 @@ view: fission_with_dimensions {
     type: number
     sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
       {% parameter percentile_conf %},
-      STRUCT(
-        mozfun.hist.merge(
-          ARRAY_AGG(
-            ${TABLE}.histogram IGNORE NULLS
-          )
-        ).values AS values
-      )
+      STRUCT<values ARRAY<STRUCT<key INT64, value FLOAT64>>>(mozfun.map.sum(
+        ARRAY_AGG(STRUCT<key INT64, value FLOAT64>(COALESCE(${TABLE}.value, 0), 1))
+      ))
     ).high ;;
   }
 }
