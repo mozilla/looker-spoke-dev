@@ -10,7 +10,7 @@ explore: histograms {
   always_filter: {
     filters: [
       os: "Windows",
-      branch: "fission-enabled, fission-disabled",
+      branch: "enabled, disabled",
     ]
   }
 }
@@ -21,7 +21,7 @@ explore: scalars {
   always_filter: {
     filters: [
       os: "Windows",
-      branch: "fission-enabled, fission-disabled",
+      branch: "enabled, disabled",
     ]
   }
 }

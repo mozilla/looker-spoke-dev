@@ -14,7 +14,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CHILD_PROCESS_LAUNCH_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -34,7 +33,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CONTENT_PROCESS_MAX
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -54,7 +52,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CHECKERBOARD_SEVERITY
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -74,7 +71,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CONTENT_PROCESS_COUNT
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -94,7 +90,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CONTENT_FRAME_TIME_VSYNC
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -114,7 +109,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: FX_NEW_WINDOW_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -134,7 +128,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: FX_TAB_SWITCH_COMPOSITE_E10S_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -154,7 +147,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: KEYPRESS_PRESENT_LATENCY_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -174,7 +166,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: MEMORY_TOTAL
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -194,7 +185,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CYCLE_COLLECTOR_MAX_PAUSE
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -214,7 +204,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: CYCLE_COLLECTOR_MAX_PAUSE_CONTENT
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -234,7 +223,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: GC_MAX_PAUSE_2
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -254,7 +242,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: GC_MAX_PAUSE_2_CONTENT
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -274,7 +261,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: GC_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -294,7 +280,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: GC_MS_CONTENT
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -314,7 +299,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: GC_SLICE_DURING_IDLE
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -334,7 +318,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: GC_SLICE_DURING_IDLE_CONTENT
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -354,7 +337,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: MEMORY_UNIQUE_CONTENT_STARTUP
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -374,7 +356,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: PERF_FIRST_CONTENTFUL_PAINT_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -394,7 +375,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: TIME_TO_FIRST_INTERACTION_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -414,7 +394,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: PERF_PAGE_LOAD_TIME_MS
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -434,7 +413,6 @@
     pivots: [histograms.branch]
     filters:
       histograms.probe: LOADED_TAB_COUNT
-      histograms.branch: fission-enabled,fission-disabled
     listen:
       OS: histograms.os
       Cores: histograms.cores_count
@@ -454,7 +432,6 @@
     pivots: [scalars.branch]
     filters:
       scalars.probe: SUBSESSION_LENGTH
-      scalars.branch: fission-enabled,fission-disabled
     listen:
       OS: scalars.os
       Cores: scalars.cores_count
@@ -474,7 +451,6 @@
     pivots: [scalars.branch]
     filters:
       scalars.probe: URI_COUNT
-      scalars.branch: fission-enabled,fission-disabled
     listen:
       OS: scalars.os
       Cores: scalars.cores_count
@@ -493,8 +469,7 @@
       scalars.percentile_low]
     pivots: [scalars.branch]
     filters:
-      scalars.probe: ACTIVE_HOURS
-      scalars.branch: fission-enabled,fission-disabled
+      scalars.probe: ACTIVE_TICKS
     listen:
       OS: scalars.os
       Cores: scalars.cores_count
