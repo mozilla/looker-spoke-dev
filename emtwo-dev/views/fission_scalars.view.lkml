@@ -46,8 +46,8 @@ view: fission_scalars {
     type: number
     sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
       {% parameter percentile_conf %},
-      STRUCT<values ARRAY<STRUCT<key INT64, value FLOAT64>>>(mozfun.map.sum(
-        ARRAY_AGG(STRUCT<key INT64, value FLOAT64>(COALESCE(${TABLE}.value, 0), 1))
+      STRUCT<values ARRAY<STRUCT<key FLOAT64, value FLOAT64>>>(mozfun.map.sum(
+        ARRAY_AGG(STRUCT<key FLOAT64, value FLOAT64>(SAFE_CAST(COALESCE(${TABLE}.value, 0.0) AS FLOAT64), 1))
       ))
     ).percentile ;;
   }
@@ -56,8 +56,8 @@ view: fission_scalars {
     type: number
     sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
       {% parameter percentile_conf %},
-      STRUCT<values ARRAY<STRUCT<key INT64, value FLOAT64>>>(mozfun.map.sum(
-        ARRAY_AGG(STRUCT<key INT64, value FLOAT64>(COALESCE(${TABLE}.value, 0), 1))
+      STRUCT<values ARRAY<STRUCT<key FLOAT64, value FLOAT64>>>(mozfun.map.sum(
+        ARRAY_AGG(STRUCT<key FLOAT64, value FLOAT64>(SAFE_CAST(COALESCE(${TABLE}.value, 0.0) AS FLOAT64), 1))
       ))
     ).low ;;
   }
@@ -66,8 +66,8 @@ view: fission_scalars {
     type: number
     sql: `moz-fx-data-shared-prod`.udf_js.jackknife_percentile_ci(
       {% parameter percentile_conf %},
-      STRUCT<values ARRAY<STRUCT<key INT64, value FLOAT64>>>(mozfun.map.sum(
-        ARRAY_AGG(STRUCT<key INT64, value FLOAT64>(COALESCE(${TABLE}.value, 0), 1))
+      STRUCT<values ARRAY<STRUCT<key FLOAT64, value FLOAT64>>>(mozfun.map.sum(
+        ARRAY_AGG(STRUCT<key FLOAT64, value FLOAT64>(SAFE_CAST(COALESCE(${TABLE}.value, 0.0) AS FLOAT64), 1))
       ))
     ).high ;;
   }
