@@ -15,8 +15,30 @@ explore: histograms {
   }
 }
 
+explore: release_histograms {
+  from:  release_histograms
+
+  always_filter: {
+    filters: [
+      os: "Windows",
+      branch: "enabled, disabled",
+    ]
+  }
+}
+
 explore: scalars {
   from:  fission_scalars
+
+  always_filter: {
+    filters: [
+      os: "Windows",
+      branch: "enabled, disabled",
+    ]
+  }
+}
+
+explore: release_scalars {
+  from:  release_scalars
 
   always_filter: {
     filters: [
