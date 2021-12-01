@@ -26,6 +26,16 @@ explore: release_histograms {
   }
 }
 
+explore: merino_histograms {
+  from:  merino_histograms
+
+  always_filter: {
+    filters: [
+      branch: "enabled, disabled",
+    ]
+  }
+}
+
 explore: scalars {
   from:  fission_scalars
 
