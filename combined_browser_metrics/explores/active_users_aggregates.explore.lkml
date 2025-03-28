@@ -1,4 +1,4 @@
-include: "../views//active_users_aggregates.view.lkml"
+include: "../views/active_users_aggregates.view.lkml"
 include: "/shared/views/countries.view.lkml"
 # include: "/firefox_desktop/views/key_tentpole_dates.view.lkml"
 
